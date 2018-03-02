@@ -1,0 +1,17 @@
+{
+  "name": "wsplanner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node core/server.js"
+  },
+  "author": "UP805988",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mysql2": "^1.5.2",
+    "simple-google-openid": "^0.2.2"
+  }
+}
