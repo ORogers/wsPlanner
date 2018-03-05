@@ -3,7 +3,6 @@ CREATE TABLE `Lecturers` (
 	`fName` varchar(30) NOT NULL,
 	`lName` varchar(30) NOT NULL,
 	`email` varchar(255) NOT NULL,
-	`token` varchar(64) NOT NULL,
 	PRIMARY KEY (`lID`)
 );
 
