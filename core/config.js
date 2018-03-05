@@ -2,10 +2,11 @@
 const path = require('path');
 
 module.exports.database = {
-	'host': 'localhost',
-	'database': 'wsPlanner',
-	'user': 'root',
-	'password': 'root'
+	host: 'localhost',
+	user: 'root',
+	password: 'root',
+	database: 'wsPlanner',
+	//socketPath: '/tmp/mysql.sock',
 }
 
 module.exports.gAuth = {

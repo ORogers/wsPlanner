@@ -13,7 +13,6 @@ app.use('/api', GoogleAuth.guardMiddleware({
 }));
 
 
-
 // static files
 app.use('/', express.static(util.public));
 
@@ -32,7 +31,6 @@ app.listen(8080, (error) => {
 //Server functions
 
 function onLogin(req, res){
-    console.log(req.user);
-    db.addUser(req.user);
+    db.findOrAdd(req.user);
     res.sendFile(util.views + '/dashboard.html');
 }

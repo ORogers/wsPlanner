@@ -10,13 +10,13 @@ let sqlPromise = null;
 async function init() {
   if (sqlPromise) return sqlPromise;
 
-  sqlPromise = newConnection();
+  sqlPromise = await newConnection();
   return sqlPromise;
 }
 
 //internal function to connect to databse
 async function newConnection() {
-  const sql = await mysql.createConnection(config.databse);
+  const sql = await mysql.createConnection(config.database);
 
   sql.on('error', (err) => {
     console.error(err);
@@ -38,13 +38,32 @@ async function shutDown() {
   await releaseConnection(await stashed);
 }
 
-module.exports.addUser = async function addUser(user){
+module.exports.findOrAdd = async function(user){
     const sql = await init();
-    let data = [user.name.givenName,
-                user.name.givenName,
-                user.email.value];
-    console.log(data);
-    const insertQuery = sql.format('INSERT INTO Lecturers VALUES ? ; ', data);
-    let result = await sql.query(insertQuery);
-    console.log(await result);
+
+    let query = 'SELECT * from Lecturers where email = ?';
+    let result = await sql.query(sql.format(query,user.emails[0].value));
+
+    if(result[0].length == 0){
+        console.log("Adding user to database")
+        return(addUser(user));
+    }else{
+        console.log("User found")
+        return(user)
+    }
+}
+
+
+
+
+async function addUser(user){
+    const sql = await init();
+
+    const values = [user.name.givenName, user.name.familyName, user.emails[0].value];
+    const columns = ["fName","lName","email"] ;
+
+    let query = 'INSERT into Lecturers(??) values (?)';
+    let result = await sql.query(query,[columns,values]);
+
+    return(result);
 }
