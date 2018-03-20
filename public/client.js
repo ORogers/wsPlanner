@@ -1,17 +1,19 @@
 'use strict';
 
+
 async function onSignIn(googleUser) {
     let auth2 = gapi.auth2.getAuthInstance();
     localStorage.setItem("authToken",auth2.currentUser.get().getAuthResponse().id_token);
     auth2.disconnect();
-    console.log(localStorage.authToken)
+
 
      let response = await callServer('/api/login','GET')
-     let html = await response.text();
-     $('html').innerHTML = html;
+
+    document.location.href = '/dashboard.html';
      fillDashboard(googleUser);
 
 }
+
 
 function signOut() {
     let auth2 = gapi.auth2.getAuthInstance();
@@ -58,7 +60,6 @@ function fillDashboard(user){
 }
 
 async function callServer(fetchURL, method, payload) {
-    const token = gapi.auth2.getAuthInstance();
 
     const fetchOptions = {
         credentials: 'same-origin',

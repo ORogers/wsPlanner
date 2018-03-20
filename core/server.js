@@ -7,18 +7,32 @@ const GoogleAuth = require('simple-google-openid');
 
 const app = express();
 
+
+
 app.use(GoogleAuth(config.gAuth.clientID));
 app.use('/api', GoogleAuth.guardMiddleware({
     realm: 'jwt'
 }));
 
 
+
 // static files
-app.use('/', express.static(util.public));
+app.use("/",express.static(util.public));
+
+// static views
+app.use("/",express.static(util.views));
+
+// app.get('/', (req,res) => {
+//     res.sendFile('/index.html');
+// });
+//
+// app.get('/dashboard', (req,res) => {
+//     res.sendFile('/dashboard.html')
+// })
 
 app.get('/api', (req,res) =>{
     res.send(req.user.displayName + ' is logged in');
-} );
+});
 
 app.get('/api/login', onLogin);
 
@@ -32,5 +46,5 @@ app.listen(8080, (error) => {
 
 function onLogin(req, res){
     db.findOrAdd(req.user);
-    res.sendFile(util.views + '/dashboard.html');
+    res.redirect("/dashboard");
 }
