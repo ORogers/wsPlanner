@@ -1,30 +1,46 @@
 html * {
     font-family: 'Ubuntu', sans-serif;
 }
-body {
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
-  background-color: rgba(0,0,0,0);
-  background-image: url("images/uopLogo.png");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-
+body{
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    background-color: rgba(0,0,0,0);
+    background-image: url("images/uopLogo.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
-header {
-  width: 100vw;
-  height: 5em;
-  text-align: left;
+
+#layoutGrid {
+  display: grid;
+
+  grid-template-areas:
+    "header header header"
+    "nav content cpntent"
+    "nav footer footer";
+
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: 5em 1fr auto;
+  margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  position: inherit;
+  height: 100vh;
+}
+
+
+
+
+header {
+  grid-area: header;
   border-bottom: solid;
   background-color: #4296D2;
-  overflow: hidden;
-
+  text-align: left;
 }
-header h1{
+
+#headerTitle{
+    text-align: center;
+    vertical-align: middle;
+
     color: #5E225F;
     padding: 0em 0.5em;
     float: left;
@@ -41,20 +57,13 @@ header ul {
 }
 
 header ul li {
-    height: 5em;
+    height: inherit;
     display: inline-block;
     padding: 0;
 }
 
-#headerTitle{
-    text-align: center;
-    vertical-align: middle;
-    line-height: 5em
-}
-
-
-
 .navButtons{
+    height: 4.8em;
     width: 5em;
     float: right;
     display: block;
@@ -68,6 +77,40 @@ header ul li {
 }
 
 
+#sidebar {
+  grid-area: nav;
+  margin: 0;
+  border-right: solid;
+  background-color: rgba(0,0,0,0.1);
+}
+#sideList{
+    padding: 0;
+    width: inherit;
+}
+
+#sideList li{
+    border: 0em;
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: 3em;
+    box-sizing: content-box;
+    border-bottom: solid;
+    line-height: 2.5em
+}
+
+#sideList li:hover{
+    background-color: rgba(0,0,0,0.2)
+}
+
+#sideList a {
+    height: 100%;
+
+}
+
+#mainContent {
+  grid-area: content;
+}
 
 .contentBox {
     text-align: center;
@@ -90,48 +133,9 @@ header ul li {
   margin: 0 auto;
 }
 
-#sidebar{
-    float: left;
-    width: 15vw;
-    height: 100%;
-    position: fixed;
-    border-right: solid;
-    background-color: rgba(0,0,0,0.1);
-
-}
-#sidebar ul{
-    padding: 0;
-    width: inherit;
-}
-
-#sidebar li{
-    border: 0em;
-    text-align: center;
-    display: block;
-    width: 100%;
-    height: 3em;
-    box-sizing: content-box;
-    border-bottom: solid;
-    line-height: 2.5em
-}
-
-#sidebar li:hover{
-    background-color: rgba(0,0,0,0.2)
-}
-
-#sidebar a {
-    height: 100%;
-
-}
-
-
 
 footer {
-  text-align: left;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  grid-area: footer;
   background-color: #efefef;
   text-align: center;
 }
