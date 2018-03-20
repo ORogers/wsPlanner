@@ -11,13 +11,24 @@
         <li id="headerTitle"><h1>Unit Planning Tool</h1></li>
         <li class="navButtons"><a id="signOut" href="" onclick="signOut();">Logout</a></li>
         <li class="navButtons"><img src="" id="userPhoto" /></li>
+        <li class="navButtons"><a onclick="TogetherJS(this); return false;">Collaborate</a></li>
     </ul>
 </header>
 
 <div id="sidebar">
     <ul id="sideList">
-        <li id="sideTitle"><h2>My Units</h2></li>
-        <li><a onclick="TogetherJS(this); return false;">Collaborate</a></li>
+        <li id="sideTitle">
+            <h2>My Units</h2>
+            <li>
+                <select>
+                    <option value="volvo">Webscript</option>
+                    <option value="saab">Webfun</option>
+                    <option value="mercedes">Webres</option>
+                    <option value="audi"></option>
+                </select>
+            </li>
+        </li>
+        <li id="sideTitle">Topics</li>
     </ul>
 </div>
 

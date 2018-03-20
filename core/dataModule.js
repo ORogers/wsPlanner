@@ -42,7 +42,14 @@ module.exports.findOrAdd = async function(user){
     const sql = await init();
 
     let query = 'SELECT * from Lecturers where email = ?';
+
     let result = await sql.query(sql.format(query,user.emails[0].value));
+
+    // try{
+    //     let result = await sql.query(query);
+    // }catch(err){
+    //     console.log(err);
+    // }
 
     if(result[0].length == 0){
         console.log("Adding user to database")
