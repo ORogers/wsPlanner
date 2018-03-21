@@ -1,26 +1,27 @@
 <!DOCTYPE html>
-<title>Unit Planning tool</title>
+<title>UPlaner</title>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://togetherjs.com/togetherjs-min.js"></script>
 <meta name="google-signin-client_id" content="777537472432-8qni684qbrq6j911t6e2s94qo8kp6fia.apps.googleusercontent.com">
 <link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
+<div id="layoutGrid">
+    <header>
+        <ul>
+            <li id="headerTitle"><h1>UPlanner</h1></li>
+        </ul>
+    </header>
 
-<header>
-    <ul>
-        <li id="headerTitle"><h1>Unit Planning Tool</h1></li>
-        <li class="navButtons"><a id="signOut" href="" onclick="signOut();">Logout</a></li>
-    </ul>
-</header>
+    <div id="mainContent">
+        <section class="contentBox" id="loginBox">
+            <p>Please use the login buttton below to sign in with google.</p>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </section>
+    </div>
 
-<section class="contentBox" id="loginBox">
-    <p>Please use the login buttton below to sign in with google.</p>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-</section>
-
-<footer>
-    <p>805988 WEBSCRIPT COUSEWORK</p>
-</footer>
-
+    <footer>
+        <p>805988 WEBSCRIPT COUSEWORK</p>
+    </footer>
+</div>
 <script src="../client.js"></script>
