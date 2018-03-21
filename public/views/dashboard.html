@@ -1,44 +1,52 @@
 <!DOCTYPE html>
-<title>Unit Planning tool</title>
+<title>UPlanner</title>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://togetherjs.com/togetherjs-min.js"></script>
 <meta name="google-signin-client_id" content="777537472432-8qni684qbrq6j911t6e2s94qo8kp6fia.apps.googleusercontent.com">
 <link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
-<header>
-    <ul>
-        <li id="headerTitle"><h1>Unit Planning Tool</h1></li>
-        <li class="navButtons"><a id="signOut" href="" onclick="signOut();">Logout</a></li>
-        <li class="navButtons"><img src="" id="userPhoto" /></li>
-        <li class="navButtons"><a onclick="TogetherJS(this); return false;">Collaborate</a></li>
-    </ul>
-</header>
-
-<div id="sidebar">
-    <ul id="sideList">
-        <li id="sideTitle">
-            <h2>My Units</h2>
-            <li>
-                <select>
-                    <option value="volvo">Webscript</option>
-                    <option value="saab">Webfun</option>
-                    <option value="mercedes">Webres</option>
-                    <option value="audi"></option>
-                </select>
+<div id="layoutGrid">
+    <header>
+        <ul>
+            <li id="headerTitle"><h1>UPlanner</h1></li>
+            <li class="navButtons userMenu">
+                <img id="userPhoto" src="">
+                <div class="userMenu-content">
+                    <a id="signOut" href="" onclick="signOut();">Logout</a>
+                    <a>Settings</a>
+                </div>
             </li>
-        </li>
-        <li id="sideTitle">Topics</li>
-    </ul>
-</div>
+            <li class="navButtons"><a onclick="TogetherJS(this); return false;">Collaborate</a></li>
+        </ul>
+    </header>
 
-<div class="contentBox">
-    Unit Title: <input type="text" /><br>
-    Unit short title: <input type="text" /><br>
-</div>
+    <div id="sidebar">
+        <ul id="sideList">
+            <li><h2>My Units</h2><li>
+                    <select>
+                        <option value="">Webscript</option>
+                        <option value="saab">Webfun</option>
+                        <option value="mercedes">Webres</option>
+                        <option value="audi"></option>
+                    </select>
+                </li>
+            </li>
+            <li id="sideTitle"><h2>Topics</h2></li>
+        </ul>
+    </div>
+    <div id="mainContentGrid">
+        <div id="unitInfo" class="contentBox">
+            Unit Info
+        </div>
+    </div>
 
-<footer>
-    <p>805988 WEBSCRIPT COUSEWORK</p>
-</footer>
+
+    <footer>
+        <p>805988 WEBSCRIPT COUSEWORK</p>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    </footer>
+</div>
 
 <script src="../client.js"></script>
+<script>fillDashboard()</script>
