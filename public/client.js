@@ -3,26 +3,29 @@
 
 async function onSignIn(googleUser) {
     let auth2 = gapi.auth2.getAuthInstance();
-    localStorage.setItem("authToken",auth2.currentUser.get().getAuthResponse().id_token);
+    localStorage.setItem("upUser",JSON.stringify(googleUser.getBasicProfile()));
+    localStorage.setItem("upAuthToken",auth2.currentUser.get().getAuthResponse().id_token);
     auth2.disconnect();
 
 
-     let response = await callServer('/api/login','GET')
-
+    let response = await callServer('/api/login','GET')
     document.location.href = '/dashboard.html';
-     fillDashboard(googleUser);
+
 
 }
 
 
 function signOut() {
     let auth2 = gapi.auth2.getAuthInstance();
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("upAuthToken");
+    localStorage.removeItem("upUser");
     auth2.signOut().then(function () {
       console.log('User signed out.');
+      document.location.href = '/index.html';
     });
 
 }
+
 
 //removes auth token on page leave
 // window.onbeforeunload = () =>{
@@ -44,7 +47,7 @@ async function testAuth(){
 
 }
 
-function fillDashboard(user){
+function fillDashboard(){
     let unitList = ["websrc","webfun","webres"];
 
     for (let i in unitList){
@@ -54,8 +57,9 @@ function fillDashboard(user){
         $("#sideList").appendChild(el);
     }
 
-    let profile = user.getBasicProfile();
-    $("#userPhoto").src = profile.getImageUrl();
+    let user = JSON.parse(localStorage.upUser)
+    $("#userPhoto").src = user.Paa
+    $(".g-signin2").style.display = "none";
 
 }
 
@@ -65,7 +69,7 @@ async function callServer(fetchURL, method, payload) {
         credentials: 'same-origin',
         method: method,
         headers: {
-            'Authorization': 'Bearer ' + localStorage.authToken,
+            'Authorization': 'Bearer ' + localStorage.upAuthToken,
         },
     };
 
