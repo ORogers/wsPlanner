@@ -151,24 +151,39 @@ header ul li {
   grid-area: content;
   display: grid;
   grid-template-areas:
-  "info info info" ;
+  "info info info"
+  "lect prac reso";
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows:  8em;
 }
 
 .contentBox {
     text-align: center;
-    height: 8em;
     position: relative;
     border: solid;
-    border-radius: 25px;
-    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    margin: 1em;
 }
 
 #unitInfo{
     grid-area: info;
-    margin: 1em 1em
+    margin: 1em 1em;
+    display:inline-block;
 }
 
+#lecture{
+    grid-area: lect;
+}
+
+#prectical{
+    grid-area: prac;
+}
+
+#resource{
+    grid-area: reso;
+}
 #loginBox{
     margin-top: 5em;
     margin-left: 40%;
