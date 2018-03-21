@@ -23,7 +23,6 @@ function signOut() {
       console.log('User signed out.');
       document.location.href = '/index.html';
     });
-
 }
 
 

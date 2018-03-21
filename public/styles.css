@@ -164,13 +164,19 @@ header ul li {
     border-radius: 15px;
     background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    margin: 1em;
+    margin: 0.5em;
 }
 
 #unitInfo{
     grid-area: info;
     margin: 1em 1em;
     display:inline-block;
+}
+
+.mainContent{
+    overflow-x: hidden;
+    height: 67vh;
+    margin: 1em;
 }
 
 #lecture{
@@ -204,4 +210,5 @@ footer {
   grid-area: footer;
   background-color: #efefef;
   text-align: center;
+
 }
