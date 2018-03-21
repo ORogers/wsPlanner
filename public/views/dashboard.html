@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<title>U-Planner</title>
+<title>UPlanner</title>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://togetherjs.com/togetherjs-min.js"></script>
 <meta name="google-signin-client_id" content="777537472432-8qni684qbrq6j911t6e2s94qo8kp6fia.apps.googleusercontent.com">
@@ -9,9 +9,14 @@
 <div id="layoutGrid">
     <header>
         <ul>
-            <li id="headerTitle"><h1>U-Planner</h1></li>
-            <li class="navButtons"><a id="signOut" href="" onclick="signOut();">Logout</a></li>
-            <li class="navButtons"><img src="" id="userPhoto" /></li>
+            <li id="headerTitle"><h1>UPlanner</h1></li>
+            <li class="navButtons userMenu">
+                <img id="userPhoto" src="">
+                <div class="userMenu-content">
+                    <a id="signOut" href="" onclick="signOut();">Logout</a>
+                    <a>Settings</a>
+                </div>
+            </li>
             <li class="navButtons"><a onclick="TogetherJS(this); return false;">Collaborate</a></li>
         </ul>
     </header>
@@ -39,7 +44,9 @@
 
     <footer>
         <p>805988 WEBSCRIPT COUSEWORK</p>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </footer>
 </div>
 
 <script src="../client.js"></script>
+<script>fillDashboard()</script>
