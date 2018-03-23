@@ -27,10 +27,8 @@ body{
   margin: 0;
   padding: 0;
   height: 100vh;
+
 }
-
-
-
 
 header {
   grid-area: header;
@@ -171,14 +169,14 @@ header ul li {
 
 #unitInfo{
     grid-area: info;
-    margin: 1em 1em;
+    margin: 0.5em 0.4em;
     display:inline-block;
 }
 
 .mainContent{
     overflow-x: hidden;
     height: 67vh;
-    margin: 1em;
+    margin: 0.7em 0.4em;
 }
 
 #lecture{
@@ -224,4 +222,55 @@ footer {
   background-color: #efefef;
   text-align: center;
 
+}
+
+@media screen and (max-width:550px) {
+    #layoutGrid {
+      display: grid;
+
+      grid-template-areas:
+        "header"
+        "nav"
+        "content"
+        "footer";
+
+      grid-template-columns: 1fr;
+      grid-template-rows: 5em 1fr;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+
+    }
+    #mainContentGrid {
+      grid-area: content;
+      display: grid;
+      grid-template-areas:
+      "info"
+      "lect"
+      "prac"
+      "reso";
+      grid-template-columns: 1fr;
+      grid-template-rows:  8em;
+    }
+}
+
+@media screen and (max-width:1000px) {
+    #layoutGrid {
+      display: grid;
+
+      grid-template-areas:
+        "header header"
+        "content content"
+        "footer footer";
+
+      grid-template-columns: 200px 1fr;
+      grid-template-rows: 5em 1fr;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+
+    }
+    #sideList{
+        display: none;
+    }
 }
