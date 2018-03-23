@@ -19,11 +19,12 @@ body{
 
   grid-template-areas:
     "header header"
-    "nav content"
+    "nav info"
+    "nav cont"
     "footer footer";
 
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 5em 1fr;
+  grid-template-columns: 15vw 1fr;
+  grid-template-rows: 10vh 8em 1fr;
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -63,7 +64,7 @@ header ul li {
 }
 
 .navButtons{
-    height: 4.8em;
+    height: 9.8vh;
     min-width: 120px;
     float: right;
     display: block;
@@ -147,14 +148,14 @@ header ul li {
     line-height: 2em
 }
 
-#mainContentGrid {
-  grid-area: content;
-  display: grid;
-  grid-template-areas:
-  "info info info"
-  "lect prac reso";
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows:  8em;
+
+#mainContentFlex{
+    grid-area: cont;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
 }
 
 .contentBox {
@@ -170,26 +171,19 @@ header ul li {
 #unitInfo{
     grid-area: info;
     margin: 0.5em 0.4em;
-    display:inline-block;
+    display:inline-block:
+    width: 100%
 }
+
 
 .mainContent{
     overflow-x: hidden;
     height: 67vh;
+    width: 30%;
     margin: 0.7em 0.4em;
 }
 
-#lecture{
-    grid-area: lect;
-}
 
-#prectical{
-    grid-area: prac;
-}
-
-#resource{
-    grid-area: reso;
-}
 
 .textSection{
     margin: 1em;
@@ -224,50 +218,50 @@ footer {
 
 }
 
+
+@media screen and (max-width:800px) and (min-width: 551px) {
+    #layoutGrid {
+      display: grid;
+
+      grid-template-areas:
+        "header"
+        "info"
+        "cont"
+        "footer";
+
+      grid-template-columns: 1fr;
+      grid-template-rows: 5em 8em;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+    }
+    .mainContent{
+        width: 45%;
+
+    }
+    #sideList{
+        display: none;
+    }
+}
+
 @media screen and (max-width:550px) {
     #layoutGrid {
       display: grid;
 
       grid-template-areas:
         "header"
-        "nav"
-        "content"
+        "info"
+        "cont"
         "footer";
 
       grid-template-columns: 1fr;
-      grid-template-rows: 5em 1fr;
+      grid-template-rows: 5em 8em;
       margin: 0;
       padding: 0;
       height: 100vh;
-
     }
-    #mainContentGrid {
-      grid-area: content;
-      display: grid;
-      grid-template-areas:
-      "info"
-      "lect"
-      "prac"
-      "reso";
-      grid-template-columns: 1fr;
-      grid-template-rows:  8em;
-    }
-}
-
-@media screen and (max-width:1000px) {
-    #layoutGrid {
-      display: grid;
-
-      grid-template-areas:
-        "header header"
-        "content content"
-        "footer footer";
-
-      grid-template-columns: 200px 1fr;
-      grid-template-rows: 5em 1fr;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
+    .mainContent{
+        width: 100%;
 
     }
     #sideList{

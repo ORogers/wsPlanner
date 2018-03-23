@@ -15,11 +15,13 @@
             <li class="navButtons userMenu">
                 <img id="userPhoto" src="">
                 <div class="userMenu-content">
-                    <a id="signOut" href="" onclick="signOut();">Logout</a>
                     <a>Settings</a>
+                    <a onclick="TogetherJS(this); return false;">Collaborate</a>
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                    <a id="signOut" href="" onclick="signOut();">Logout</a>
                 </div>
             </li>
-            <li class="navButtons"><a onclick="TogetherJS(this); return false;">Collaborate</a></li>
+            <li class="navButtons"></li>
         </ul>
     </header>
 
@@ -35,44 +37,32 @@
                 </li>
             </li>
             <li id="sideTitle"><h2>Topics</h2></li>
-            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">1</li>
-            <li class="twoWeeks" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">2</li>
-            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">3</li>
-            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event) " ondrop="dropped(event)" draggable="true">4</li>
+            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">Node</li>
+            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">Packages</li>
+            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">Databases</li>
+            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event) " ondrop="dropped(event)" draggable="true">API</li>
         </ul>
     </div>
-    <div id="mainContentGrid">
+
         <div id="unitInfo" class="contentBox ">
             <h2>Web Script</h2>
+
             <button>Save</button>
         </div>
-
-        <div id="lecture" class="contentBox mainContent">
-            <h2>Lectuers</h2>
-
-        </div>
-
-        <div id="practical" class="contentBox mainContent">
-            <h2>Practicals</h2>
-            <div class-"textSection">
-                <div id="editor">
-
-                </div>
+        <div id="mainContentFlex">
+            <div class="contentBox mainContent">
+                <h1>title</h1>
+            </div>
+            <div class="contentBox mainContent">
+                <h1>title</h1>
+            </div>
+            <div class="contentBox mainContent">
+                <h1>title</h1>
             </div>
         </div>
-
-        <div id="resource" class="contentBox mainContent">
-            <h2>Resources</h2>
-            <div class-"textSection">
-
-            </div>
-        </div>
-    </div>
-
 
     <footer>
         <p>805988 WEBSCRIPT COUSEWORK</p>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </footer>
 </div>
 
