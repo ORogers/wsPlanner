@@ -1,6 +1,8 @@
 html * {
     font-family: 'Ubuntu', sans-serif;
 }
+
+
 body{
     height: 100vh;
     width: 100vw;
@@ -17,18 +19,67 @@ body{
 
   grid-template-areas:
     "header header"
-    "nav content"
+    "nav info"
+    "nav cont"
     "footer footer";
 
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 5em 1fr;
+  grid-template-columns: 15vw 1fr;
+  grid-template-rows: 10vh 8em 1fr;
   margin: 0;
   padding: 0;
   height: 100vh;
+
 }
 
+#editGrid {
+  display: grid;
 
+  grid-template-areas:
+    "header"
+    "info"
+    "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: 10vh 1fr 3em;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
 
+}
+#editUnitInfo{
+    margin: 0 33%;
+}
+
+#units{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#editUnitInfo input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 2em 0 5em 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#editUnitInfo input[type=submit] {
+    width: 100%;
+    background-color: #4296D2;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#editUnitInfo input[type=submit]:hover {
+    background-color: #1179B5;
+}
 
 header {
   grid-area: header;
@@ -61,9 +112,12 @@ header ul li {
     display: inline-block;
     padding: 0;
 }
+#editUnitInfo{
+    grid-area: info;
+}
 
 .navButtons{
-    height: 4.8em;
+    height: 9.8vh;
     min-width: 120px;
     float: right;
     display: block;
@@ -147,28 +201,48 @@ header ul li {
     line-height: 2em
 }
 
-#mainContentGrid {
-  grid-area: content;
-  display: grid;
-  grid-template-areas:
-  "info info info" ;
+
+#mainContentFlex{
+    grid-area: cont;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
 }
 
 .contentBox {
     text-align: center;
-    height: 8em;
     position: relative;
     border: solid;
-    border-radius: 25px;
-    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    margin: 0.5em;
 }
 
 #unitInfo{
     grid-area: info;
-    margin: 1em 1em
+    margin: 0.5em 0.4em;
+    display:inline-block:
+    width: 100%
 }
 
+
+.mainContent{
+    overflow-x: hidden;
+    height: 67vh;
+    width: 30%;
+    margin: 0.7em 0.4em;
+}
+
+
+
+.textSection{
+    margin: 1em;
+    padding: 2em;
+    background-color: white;
+}
 #loginBox{
     margin-top: 5em;
     margin-left: 40%;
@@ -184,9 +258,66 @@ header ul li {
   margin: 0 auto;
 }
 
-
+.oneWeek{
+    height: 5em;
+}
+.twoWeeks{
+    height: 7em;
+}
 footer {
   grid-area: footer;
   background-color: #efefef;
   text-align: center;
+
+}
+
+
+@media screen and (max-width:800px) and (min-width: 551px) {
+    #layoutGrid {
+      display: grid;
+
+      grid-template-areas:
+        "header"
+        "info"
+        "cont"
+        "footer";
+
+      grid-template-columns: 1fr;
+      grid-template-rows: 5em 8em;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+    }
+    .mainContent{
+        width: 45%;
+
+    }
+    #sideList{
+        display: none;
+    }
+}
+
+@media screen and (max-width:550px) {
+    #layoutGrid {
+      display: grid;
+
+      grid-template-areas:
+        "header"
+        "info"
+        "cont"
+        "footer";
+
+      grid-template-columns: 1fr;
+      grid-template-rows: 5em 8em;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+    }
+    .mainContent{
+        width: 100%;
+
+    }
+    #sideList{
+        display: none;
+    }
 }

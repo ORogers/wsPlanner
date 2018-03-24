@@ -23,7 +23,6 @@ function signOut() {
       console.log('User signed out.');
       document.location.href = '/index.html';
     });
-
 }
 
 
@@ -48,18 +47,55 @@ async function testAuth(){
 }
 
 function fillDashboard(){
-    let unitList = ["websrc","webfun","webres"];
-
-    for (let i in unitList){
-        let el = document.createElement('li');
-        el.innerHTML = unitList[i];
-        el.setAttribute("class", "unit");
-        $("#sideList").appendChild(el);
+    // let unitList = ["websrc","webfun","webres"];
+    //
+    // for (let i in unitList){
+    //     let el = document.createElement('li');
+    //     el.innerHTML = unitList[i];
+    //     el.setAttribute("class", "unit");
+    //     $("#sideList").appendChild(el);
+    //}
+    let topicList = document.querySelectorAll(".topics");
+    for (let topic of topicList){
+        topic.addEventListener("ondragstart",dragStarted);
+        topic.addEventListener("ondragover",draggingOver);
+        topic.addEventListener("ondrop",dropped);
     }
-
     let user = JSON.parse(localStorage.upUser)
     $("#userPhoto").src = user.Paa
     $(".g-signin2").style.display = "none";
+
+}
+
+let source;
+function dragStarted(evt){
+//start drag
+console.log("grag start");
+source=evt.target;
+//set data
+evt.dataTransfer.setData("text/plain", evt.target.innerHTML);
+//specify allowed transfer
+evt.dataTransfer.effectAllowed = "move";
+}
+
+function draggingOver(e){
+//drag over
+e.preventDefault();
+//specify operation
+e.dataTransfer.dropEffect = "move";
+}
+
+function dropped(evt){
+//drop
+evt.preventDefault();
+evt.stopPropagation();
+//update text in dragged item
+source.innerHTML = evt.target.innerHTML;
+let classHolder = source.getAttribute("class")
+source.classList.add(evt.target.getAttribute("class"));
+evt.target.classList = classHolder;
+//update text in drop target
+evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
 
 }
 
