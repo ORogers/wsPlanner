@@ -54,6 +54,7 @@ body{
     margin: 0;
     width: 100%;
     height: 100%;
+    text-align: center;
 }
 
 #editUnitInfo input[type=text], select {
@@ -221,12 +222,36 @@ header ul li {
     margin: 0.5em;
 }
 
+
 #unitInfo{
     grid-area: info;
     margin: 0.5em 0.4em;
     display:inline-block;
-    width: 100%
+    width: 90%
 }
+
+#unitInfo ul {
+    margin: 0;
+	padding: 0px;
+	list-style-type: none;
+	text-align: left;
+    height: 100%;
+
+}
+
+#unitInfo ul li {
+    display: inline-block;
+    padding: 0;
+}
+#unitInfo select{
+    margin-top:  0;
+}
+.topicInfo{
+    float: right;
+    margin: 2em 0;
+}
+
+
 
 
 .mainContent{

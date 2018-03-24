@@ -41,10 +41,23 @@
     </div>
 
         <div id="unitInfo" class="contentBox ">
-            <h2>Web Script</h2>
-
-            <button>Save</button>
+            <ul>
+                <li class="unitInfo"><h2>WEBSCRIPT</h2></li>
+                <li class="unitInfo"><a href="">Info</a></li>
+                <input type="submit"  class="topicInfo" value="Save" onclick="sendTopic()" >
+                <li class="topicInfo">
+                    <label>Number of weeks</label>
+                    <input id="tWeeks" type="number" placeholder="Weeks"/>
+                </li>
+                <li class="topicInfo">
+                    <select id="leader">
+                        <option value="1">Oliver</option>
+                    </select>
+                </li>
+                <li class="topicInfo"><input id="topicName" placeholder="Topic Name" /></li>
+            </ul>
         </div>
+
         <div id="mainContentFlex">
             <div class="contentBox mainContent">
                 <h1>title</h1>

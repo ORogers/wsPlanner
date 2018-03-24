@@ -131,10 +131,24 @@ function sendUnit(){
     let response = callServer('/api/unit',"POST",unit);
 }
 
+function sendTopic(){
+
+    let topic = {
+        name: $('#topicName').value,
+        uID: $('#units').value,
+        leader: $('#leader').value,
+        weeks: $('#tWeeks').value
+    }
+    let response = callServer('/api/topic',"POST",topic);
+}
+
+
 async function getUnits(){
     let units = await callServer('/api/unit',"GET");
     return(units);
 }
+
+
 
 async function callServer(fetchURL, method, payload) {
 

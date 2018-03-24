@@ -87,6 +87,21 @@ module.exports.addUnit = async function(unit){
     }
 }
 
+module.exports.addTopic = async function(topic){
+    const sql = await init();
+    let query = 'INSERT into topics(??) Values (?)';
+    let coulumns = ['tName','uID',"tLeader",'tWeeks'];
+    let values = [topic.name,topic.uID,topic.leader,topic.weeks];
+    query = sql.format(query,[coulumns,values]);
+    try{
+        let result = await sql.query(query);
+        return result;
+    }catch(err){
+        throw err;
+    }
+
+}
+
 module.exports.findOrAdd = async function(user){
     const sql = await init();
 
