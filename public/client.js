@@ -1,4 +1,6 @@
 'use strict';
+//Global var to hould units
+let units;
 
 
 async function onSignIn(googleUser) {
@@ -46,25 +48,45 @@ async function testAuth(){
 
 }
 
-function fillDashboard(){
-    // let unitList = ["websrc","webfun","webres"];
-    //
-    // for (let i in unitList){
-    //     let el = document.createElement('li');
-    //     el.innerHTML = unitList[i];
-    //     el.setAttribute("class", "unit");
-    //     $("#sideList").appendChild(el);
-    //}
-    let topicList = document.querySelectorAll(".topics");
-    for (let topic of topicList){
-        topic.addEventListener("ondragstart",dragStarted);
-        topic.addEventListener("ondragover",draggingOver);
-        topic.addEventListener("ondrop",dropped);
-    }
+async function fillDashboard(){
+    let units = await getUnits();
+    // let topicList = document.querySelectorAll(".topics");
+    // for (let topic of topicList){
+    //     topic.addEventListener("ondragstart",dragStarted);
+    //     topic.addEventListener("ondragover",draggingOver);
+    //     topic.addEventListener("ondrop",dropped);
+    // }
+
+    //Fills unit list
+
+    fillUnitList(units);
     let user = JSON.parse(localStorage.upUser)
     $("#userPhoto").src = user.Paa
     $(".g-signin2").style.display = "none";
 
+}
+function fillUnitList(units){
+    let unitList = $('#units');
+    for (let unit of units){
+        let option = document.createElement("option");
+        option.text = unit.uShortTitle;
+        option.value = unit.uID;
+        unitList.add(option);
+    }
+
+    let addNewOp = document.createElement("option");
+    addNewOp.text = "Add new unit";
+    addNewOp.value = "+";
+    unitList.add(addNewOp);
+
+    unitList.addEventListener("change", unitChanged);
+
+}
+
+function unitChanged(event){
+    if (event.target.value == "+"){
+        document.location.href = '/editUnit.html';
+    }
 }
 
 let source;
@@ -99,6 +121,21 @@ evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
 
 }
 
+function sendUnit(){
+    let unit = {
+        title: $('#uName').value,
+        sTitle: $('#uSName').value,
+        desc: $('#uDesc').value,
+        weeks: $('#uWeeks').value
+    }
+    let response = callServer('/api/unit',"POST",unit);
+}
+
+async function getUnits(){
+    let units = await callServer('/api/unit',"GET");
+    return(units);
+}
+
 async function callServer(fetchURL, method, payload) {
 
     const fetchOptions = {
@@ -118,7 +155,27 @@ async function callServer(fetchURL, method, payload) {
         fetchOptions.headers['Accept'] = 'application/json';
     }
     let response = await fetch(fetchURL, fetchOptions);
+    if (!response.ok) {
+        // handle the error
+        console.log("Server error:\n" + response.status);
+        return;
+    }
 
-    return response;
+    // handle the response
+    let data = await response.text();
+    if (!data) {
+        data = JSON.stringify({
+            error: "error on fetch"
+        });
+    }
+
+    try {
+        data = JSON.parse(data);
+    } catch (err) {
+        data = {
+            response: data
+        };
+    }
+    return data;
 
 }

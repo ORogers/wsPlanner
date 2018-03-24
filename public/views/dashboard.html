@@ -21,19 +21,14 @@
                     <a id="signOut" href="" onclick="signOut();">Logout</a>
                 </div>
             </li>
-            <li class="navButtons"></li>
         </ul>
     </header>
 
     <div id="sidebar">
         <ul id="sideList">
-            <li><h2>My Units</h2><li>
-                    <select id="units">
-                        <option value="">Webscript</option>
-                        <option value="">Webfun</option>
-                        <option value="">Webres</option>
-                        <option value=""></option>
-                    </select>
+            <li><h2>My Units</h2>
+                <li>
+                    <select id="units"></select>
                 </li>
             </li>
             <li id="sideTitle"><h2>Topics</h2></li>
@@ -41,6 +36,7 @@
             <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">Packages</li>
             <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">Databases</li>
             <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event) " ondrop="dropped(event)" draggable="true">API</li>
+            <li><a>+</a></li>
         </ul>
     </div>
 

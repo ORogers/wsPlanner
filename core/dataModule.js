@@ -38,27 +38,76 @@ async function shutDown() {
   await releaseConnection(await stashed);
 }
 
+module.exports.findUser = async function findUser(user){
+    const sql = await init();
+    let query = 'SELECT * from Lecturers where email = ?';
+    try{
+        let result = await sql.query(sql.format(query,user.emails[0].value));
+
+        if(result[0].length == 0){
+            return(false);
+        }else{
+            return(result[0][0])
+        }
+    }catch(err){
+        throw err;
+    }
+}
+
+module.exports.getUnits= async function(req){
+    try{
+        const sql = await init();
+        let query = `SELECT
+        units.uID, units.uTitle, units.uShortTitle, units.uDesc,
+        units.uWeeks, lecturers.fName, lecturers.lName
+        FROM units
+        INNER JOIN lecturers
+            ON units.uCoor = lecturers.lID
+        WHERE lecturers.email= ?`;
+
+        query = sql.format(query,req.user.emails[0].value);
+        let results = await sql.query(query);
+        return results[0];
+    }catch(err){
+        console.log(err);
+    }
+}
+
+module.exports.addUnit = async function(unit){
+    const sql = await init();
+    let query = 'INSERT into units(??) Values (?)'
+    let coulumns = ['uTitle','uShortTitle','uDesc','uCoor','uWeeks']
+    let values = [unit.title, unit.sTitle,unit.desc, unit.coor, unit.weeks];
+    query =sql.format(query,[coulumns,values])
+    try{
+        let result = await sql.query(query);
+        return result;
+    }catch(err){
+        throw err;
+    }
+}
+
 module.exports.findOrAdd = async function(user){
     const sql = await init();
 
     let query = 'SELECT * from Lecturers where email = ?';
 
-    let result = await sql.query(sql.format(query,user.emails[0].value));
+    try{
+        let result = await sql.query(sql.format(query,user.emails[0].value));
 
-    // try{
-    //     let result = await sql.query(query);
-    // }catch(err){
-    //     console.log(err);
-    // }
-
-    if(result[0].length == 0){
-        console.log("Adding user to database")
-        return(addUser(user));
-    }else{
-        console.log("User found")
-        return(user)
+        if(result[0].length == 0){
+            console.log("Adding user to database")
+            return(addUser(user));
+        }else{
+            console.log("User found")
+            return(user)
+        }
+    }catch(err){
+        throw err;
     }
 }
+
+
 
 
 

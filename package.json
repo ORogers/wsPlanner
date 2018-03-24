@@ -11,6 +11,7 @@
   "author": "UP805988",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "mysql2": "^1.5.2",
     "simple-google-openid": "^0.2.2"
