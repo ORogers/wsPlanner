@@ -99,6 +99,16 @@ evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
 
 }
 
+function sendUnit(){
+    let unit = {
+        title: $('#uName').value,
+        sTitle: $('#uSName').value,
+        desc: $('#uDesc').value,
+        weeks: $('#uWeeks').value
+    }
+    callServer('/api/unit',"POST",unit);
+}
+
 async function callServer(fetchURL, method, payload) {
 
     const fetchOptions = {
