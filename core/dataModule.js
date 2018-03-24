@@ -38,7 +38,7 @@ async function shutDown() {
   await releaseConnection(await stashed);
 }
 
-module.exports.findUserID = async function findUserID(user){
+module.exports.findUser = async function findUser(user){
     const sql = await init();
     let query = 'SELECT * from Lecturers where email = ?';
     try{
@@ -47,10 +47,29 @@ module.exports.findUserID = async function findUserID(user){
         if(result[0].length == 0){
             return(false);
         }else{
-            return(result)
+            return(result[0][0])
         }
     }catch(err){
         throw err;
+    }
+}
+
+module.exports.getUnits= async function(req){
+    try{
+        const sql = await init();
+        let query = `SELECT
+        units.uID, units.uTitle, units.uShortTitle, units.uDesc,
+        units.uWeeks, lecturers.fName, lecturers.lName
+        FROM units
+        INNER JOIN lecturers
+            ON units.uCoor = lecturers.lID
+        WHERE lecturers.email= ?`;
+
+        query = sql.format(query,req.user.emails[0].value);
+        let results = await sql.query(query);
+        return results[0];
+    }catch(err){
+        console.log(err);
     }
 }
 
@@ -64,7 +83,7 @@ module.exports.addUnit = async function(unit){
         let result = await sql.query(query);
         return result;
     }catch(err){
-        console.log(err);
+        throw err;
     }
 }
 
@@ -104,5 +123,3 @@ async function addUser(user){
 
     return(result);
 }
-
-module.exports.getuser

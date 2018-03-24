@@ -224,7 +224,7 @@ header ul li {
 #unitInfo{
     grid-area: info;
     margin: 0.5em 0.4em;
-    display:inline-block:
+    display:inline-block;
     width: 100%
 }
 

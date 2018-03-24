@@ -37,7 +37,11 @@ app.get('/api', (req,res) =>{
 
 app.get('/api/login', onLogin);
 
+app.get('/api/unit',getUnits)
+
 app.post('/api/unit',addUnit);
+
+
 // Starts server
 app.listen(8080, (error) => {
     if (error) console.error('ERROR: Server could not start', error);
@@ -51,10 +55,20 @@ function onLogin(req, res){
     res.redirect("/dashboard");
 }
 
-async function addUnit(req,res){
 
-    let userResult = await db.findUserID(req.user);
-    let user = userResult[0][0];
+async function getUnits(req,res){
+    try{
+        let results = await db.getUnits(req);
+        res.status(200).json(results);
+    }catch(err){
+        console.log(err);
+        res.sendStatus(500);
+    }
+
+
+}
+async function addUnit(req,res){
+    let user = await db.findUser(req.user);
     let unit = {
         title: req.body.title,
         sTitle:req.body.sTitle,
