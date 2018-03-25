@@ -23,14 +23,6 @@ app.use("/",express.static(util.public));
 // static views
 app.use("/",express.static(util.views));
 
-// app.get('/', (req,res) => {
-//     res.sendFile('/index.html');
-// });
-//
-// app.get('/dashboard', (req,res) => {
-//     res.sendFile('/dashboard.html')
-// })
-
 app.get('/api', (req,res) =>{
     res.send(req.user.displayName + ' is logged in');
 });
@@ -40,6 +32,10 @@ app.get('/api/login', onLogin);
 app.get('/api/unit',getUnits)
 
 app.post('/api/unit',addUnit);
+
+app.post('/api/topic',addTopic);
+
+app.get('/api/topics',sendTopics);
 
 
 // Starts server
@@ -58,8 +54,16 @@ function onLogin(req, res){
 
 async function getUnits(req,res){
     try{
-        let results = await db.getUnits(req);
-        res.status(200).json(results);
+        if(req.query.uID == undefined || req.query.uID <= 0){
+            let results = await db.getUnits(req);
+            res.status(200).json(results);
+        }else{
+            let response = {};
+            response.topics = await db.topicsByUnit(req.query.uID);
+            response.unit = await db.getUnit(req.query.uID);
+            res.status(200).json(response);
+        }
+
     }catch(err){
         console.log(err);
         res.sendStatus(500);
@@ -76,7 +80,31 @@ async function addUnit(req,res){
         coor: user.lID,
         weeks: req.body.weeks
     }
-    let result = db.addUnit(unit);
+    let result = await db.addUnit(unit);
     res.send(result);
 
+}
+
+async function addTopic(req,res){
+    let topic = {
+        name: req.body.name,
+        uID: req.body.uID,
+        leader: req.body.leader,
+        weeks: req.body.weeks
+    }
+    let result = await db.addTopic(topic);
+    res.send(result);
+}
+
+async function sendTopics(req,res){
+    if(req.query.uID == undefined || req.query.uID <= 0){
+        res.sendStatus(400);
+    }
+
+    try{
+        let results = await db.topicsByUnit(req.query.uID);
+        res.status(200).json(results);
+    }catch(err){
+        res.sendStatus(500);
+    }
 }

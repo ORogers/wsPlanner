@@ -52,6 +52,22 @@ CREATE TABLE IF NOT EXISTS `units` (
   CONSTRAINT `Units_fk0` FOREIGN KEY (`uCoor`) REFERENCES `lecturers` (`lID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
+
+
+CREATE TABLE `topics` (
+	`tID` bigint NOT NULL AUTO_INCREMENT,
+	`tName` varchar(60) NOT NULL,
+	`uID` bigint NOT NULL ,
+	`tLeader` bigint ,
+	`tWeeks` int NOT NULL,
+	PRIMARY KEY (`tID`)
+);
+
+
+ALTER TABLE `topics` ADD CONSTRAINT `topics_fk0` FOREIGN KEY (`uID`) REFERENCES `Units`(`uID`);
+
+ALTER TABLE `topics` ADD CONSTRAINT `topics_fk1` FOREIGN KEY (`tLeader`) REFERENCES `Lecturers`(`lID`);
+
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

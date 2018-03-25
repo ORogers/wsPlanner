@@ -73,6 +73,23 @@ module.exports.getUnits= async function(req){
     }
 }
 
+module.exports.getUnit = async function(uID){
+    try{
+        const sql = await init();
+        let query = 'SELECT * FROM units where uID = ?';
+        query = sql.format(query,uID);
+        let result = await sql.query(query);
+        if(result[0].length == 0){
+            return(false);
+        }else{
+            return(result[0])
+        }
+    }catch(err){
+        throw err;
+    }
+
+}
+
 module.exports.addUnit = async function(unit){
     const sql = await init();
     let query = 'INSERT into units(??) Values (?)'
@@ -85,6 +102,23 @@ module.exports.addUnit = async function(unit){
     }catch(err){
         throw err;
     }
+}
+
+
+
+module.exports.addTopic = async function(topic){
+    const sql = await init();
+    let query = 'INSERT into topics(??) Values (?)';
+    let coulumns = ['tName','uID',"tLeader",'tWeeks'];
+    let values = [topic.name,topic.uID,topic.leader,topic.weeks];
+    query = sql.format(query,[coulumns,values]);
+    try{
+        let result = await sql.query(query);
+        return result;
+    }catch(err){
+        throw err;
+    }
+
 }
 
 module.exports.findOrAdd = async function(user){
@@ -107,6 +141,19 @@ module.exports.findOrAdd = async function(user){
     }
 }
 
+module.exports.topicsByUnit = async function(uID){
+    const sql = await init();
+    let query = `SELECT
+    topics.tID, topics.tName, topics.tWeeks,
+    lecturers.fName, lecturers.lName
+    FROM topics
+    JOIN lecturers ON topics.tLeader = lecturers.lID
+    JOIN units ON topics.uID = units.uID
+    WHERE topics.uID = ?`;
+    query = sql.format(query,uID);
+    let results = await sql.query(query);
+    return results[0];
+}
 
 
 

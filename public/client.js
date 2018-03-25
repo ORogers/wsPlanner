@@ -1,6 +1,6 @@
 'use strict';
 //Global var to hould units
-let units;
+let currentUnit = {};
 
 
 async function onSignIn(googleUser) {
@@ -80,44 +80,91 @@ function fillUnitList(units){
     unitList.add(addNewOp);
 
     unitList.addEventListener("change", unitChanged);
+    refreshTopics();
 
 }
+async function refreshTopics(){
+    let unit = $('#units').value;
+    let response = await callServer(('/api/topics?uID=' + unit) ,'GET')
+    fillTopics(response);
+}
 
-function unitChanged(event){
+function fillTopics(topics){
+    let topicsList = $('#topicList');
+    topicsList.innerHTML= "";
+    for (let topic of topics){
+        let li = document.createElement("li");
+        li.innerHTML = topic.tName;
+        li.addEventListener("dragstart",dragStarted);
+        li.addEventListener("dragover",draggingOver);
+        li.addEventListener("dragover",draggingOver);
+        li.addEventListener("drop",dropped);
+        li.addEventListener("click",setCurrentTopic);
+        li.setAttribute('value',topic.tID);
+        li.setAttribute('draggable',true);
+        topicsList.appendChild(li);
+    }
+    let li = document.createElement("li");
+    li.innerHTML = "+";
+    li.setAttribute('value','+');
+    topicsList.appendChild(li);
+}
+
+async function unitChanged(event){
     if (event.target.value == "+"){
         document.location.href = '/editUnit.html';
+    }else{
+        let url = '/api/unit?uID=' + event.target.value;
+        let unit = await callServer(url,'GET');
+        currentUnit.topics = unit.topics;
+        currentUnit.unit = unit.unit[0];
+        fillTopics(unit.topics);
+        fillInfobar(unit.unit[0]);
     }
+}
+
+function setCurrentTopic(event){
+    currentUnit.currentTopic = event.target.value;
+    let topic = currentUnit.topics.filter(topic => topic.tID == currentUnit.currentTopic);
+    fillInfobar(topic[0]);
+}
+
+function fillInfobar(topic){
+    $('#unitTitle').textContent = currentUnit.unit.uTitle;
+    $('#topicName').value = topic.tName;
+    $('#tWeeks').value = topic.tWeeks;
+
 }
 
 let source;
 function dragStarted(evt){
-//start drag
-console.log("grag start");
-source=evt.target;
-//set data
-evt.dataTransfer.setData("text/plain", evt.target.innerHTML);
-//specify allowed transfer
-evt.dataTransfer.effectAllowed = "move";
+    //start drag
+    console.log("grag start");
+    source=evt.target;
+    //set data
+    evt.dataTransfer.setData("text/plain", evt.target.innerHTML);
+    //specify allowed transfer
+    evt.dataTransfer.effectAllowed = "move";
 }
 
 function draggingOver(e){
-//drag over
-e.preventDefault();
-//specify operation
-e.dataTransfer.dropEffect = "move";
+    //drag over
+    e.preventDefault();
+    //specify operation
+    e.dataTransfer.dropEffect = "move";
 }
 
 function dropped(evt){
-//drop
-evt.preventDefault();
-evt.stopPropagation();
-//update text in dragged item
-source.innerHTML = evt.target.innerHTML;
-let classHolder = source.getAttribute("class")
-source.classList.add(evt.target.getAttribute("class"));
-evt.target.classList = classHolder;
-//update text in drop target
-evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
+    //drop
+    evt.preventDefault();
+    evt.stopPropagation();
+    //update text in dragged item
+    source.innerHTML = evt.target.innerHTML;
+    let valueHolder = source.getAttribute("value")
+    source.setAttribute("value",evt.target.value);
+    evt.target.setAttribute("value",valueHolder);
+    //update text in drop target
+    evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
 
 }
 
@@ -131,10 +178,25 @@ function sendUnit(){
     let response = callServer('/api/unit',"POST",unit);
 }
 
+function sendTopic(){
+
+    let topic = {
+        name: $('#topicName').value,
+        uID: $('#units').value,
+        leader: $('#leader').value,
+        weeks: $('#tWeeks').value
+    }
+    let response = callServer('/api/topic',"POST",topic);
+    refreshTopics();
+}
+
+
 async function getUnits(){
     let units = await callServer('/api/unit',"GET");
     return(units);
 }
+
+
 
 async function callServer(fetchURL, method, payload) {
 
