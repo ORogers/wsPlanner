@@ -35,6 +35,8 @@ app.post('/api/unit',addUnit);
 
 app.post('/api/topic',addTopic);
 
+app.get('/api/topics',sendTopics);
+
 
 // Starts server
 app.listen(8080, (error) => {
@@ -52,8 +54,16 @@ function onLogin(req, res){
 
 async function getUnits(req,res){
     try{
-        let results = await db.getUnits(req);
-        res.status(200).json(results);
+        if(req.query.uID == undefined || req.query.uID <= 0){
+            let results = await db.getUnits(req);
+            res.status(200).json(results);
+        }else{
+            let response = {};
+            response.topics = await db.topicsByUnit(req.query.uID);
+            response.unit = await db.getUnit(req.query.uID);
+            res.status(200).json(response);
+        }
+
     }catch(err){
         console.log(err);
         res.sendStatus(500);
@@ -84,4 +94,17 @@ async function addTopic(req,res){
     }
     let result = await db.addTopic(topic);
     res.send(result);
+}
+
+async function sendTopics(req,res){
+    if(req.query.uID == undefined || req.query.uID <= 0){
+        res.sendStatus(400);
+    }
+
+    try{
+        let results = await db.topicsByUnit(req.query.uID);
+        res.status(200).json(results);
+    }catch(err){
+        res.sendStatus(500);
+    }
 }

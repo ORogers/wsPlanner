@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-client_id" content="777537472432-8qni684qbrq6j911t6e2s94qo8kp6fia.apps.googleusercontent.com">
 <link rel="stylesheet" href="styles.css">
+<link rel="shortcut icon" href="../images/uopLogo.png"/>
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
@@ -32,17 +33,17 @@
                 </li>
             </li>
             <li id="sideTitle"><h2>Topics</h2></li>
-            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">Node</li>
-            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">Packages</li>
-            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)" draggable="true">Databases</li>
-            <li class="oneWeek" ondragstart="dragStarted(event)" ondragover="draggingOver(event) " ondrop="dropped(event)" draggable="true">API</li>
-            <li><a>+</a></li>
         </ul>
+        <ul id="topicList">
+
+        </ul>
+
+
     </div>
 
         <div id="unitInfo" class="contentBox ">
             <ul>
-                <li class="unitInfo"><h2>WEBSCRIPT</h2></li>
+                <li class="unitInfo"><h2 id="unitTitle">Loading</h2></li>
                 <li class="unitInfo"><a href="">Info</a></li>
                 <input type="submit"  class="topicInfo" value="Save" onclick="sendTopic()" >
                 <li class="topicInfo">
@@ -61,6 +62,8 @@
         <div id="mainContentFlex">
             <div class="contentBox mainContent">
                 <h1>title</h1>
+                <div id="editor">
+                </div>
             </div>
             <div class="contentBox mainContent">
                 <h1>title</h1>
