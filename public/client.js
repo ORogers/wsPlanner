@@ -102,6 +102,7 @@ function fillTopics(topics){
         li.addEventListener("click",setCurrentTopic);
         li.setAttribute('value',topic.tID);
         li.setAttribute('draggable',true);
+        li.style.height = String (6 * topic.tWeeks) + "vh" ;
         topicsList.appendChild(li);
     }
     let li = document.createElement("li");
@@ -119,14 +120,14 @@ async function unitChanged(event){
         currentUnit.topics = unit.topics;
         currentUnit.unit = unit.unit[0];
         fillTopics(unit.topics);
-        fillInfobar(unit.unit[0]);
+        fillInfobar(currentUnit.topics[0]);
     }
 }
 
 function setCurrentTopic(event){
-    currentUnit.currentTopic = event.target.value;
-    let topic = currentUnit.topics.filter(topic => topic.tID == currentUnit.currentTopic);
-    fillInfobar(topic[0]);
+    currentUnit.currentTopic = (currentUnit.topics.filter(topic => topic.tID == event.target.value))[0];
+    currentUnit.currentTopic.notes = [];
+    fillInfobar(currentUnit.currentTopic);
 }
 
 function fillInfobar(topic){
@@ -161,8 +162,11 @@ function dropped(evt){
     //update text in dragged item
     source.innerHTML = evt.target.innerHTML;
     let valueHolder = source.getAttribute("value")
+    let hightHolder = source.style.height
+    source.style.height = evt.target.style.height;
     source.setAttribute("value",evt.target.value);
     evt.target.setAttribute("value",valueHolder);
+    evt.target.style.height = hightHolder;
     //update text in drop target
     evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
 
@@ -196,6 +200,26 @@ async function getUnits(){
     return(units);
 }
 
+function addNote(){
+    const newNote = window.note.content.cloneNode(true);
+    let noteList = currentUnit.currentTopic.notes;
+    const nID = "note" + noteList.length;
+    const editor = newNote.querySelector("#editor");
+    editor.id = "editor" + noteList.length;
+
+    newNote.id = nID;
+    let note = {
+        id: nID,
+        title: null,
+        data: null
+    }
+    currentUnit.currentTopic.notes += note;
+    const plusNote = $('#plusNote');
+    $('#mainContentFlex').insertBefore(newNote,plusNote);
+    let quill = new Quill(("#" + editor.id), {
+      theme: 'snow'
+    });
+}
 
 
 async function callServer(fetchURL, method, payload) {
