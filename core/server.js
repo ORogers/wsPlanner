@@ -48,6 +48,7 @@ app.post('/api/topic',addTopic);
 app.get('/api/topics',sendTopics);
 
 
+
 // Starts server
 app.listen(8080, (error) => {
     if (error) console.error('ERROR: Server could not start', error);
@@ -98,9 +99,11 @@ async function addUnit(req,res){
 async function addTopic(req,res){
     let topic = {
         name: req.body.name,
+        order: req.body.tOrder,
         uID: req.body.uID,
         leader: req.body.leader,
-        weeks: req.body.weeks
+        weeks: req.body.weeks,
+        notes: req.body.notes
     }
     let result = await db.addTopic(topic);
     res.send(result);

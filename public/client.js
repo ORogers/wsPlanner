@@ -80,18 +80,12 @@ function fillUnitList(units){
     unitList.add(addNewOp);
 
     unitList.addEventListener("change", unitChanged);
-    refreshTopics();
-
-}
-async function refreshTopics(){
-    let unit = $('#units').value;
-    let response = await callServer(('/api/topics?uID=' + unit) ,'GET')
-    fillTopics(response);
 }
 
 function fillTopics(topics){
     let topicsList = $('#topicList');
     topicsList.innerHTML= "";
+    currentUnit.currentTopic = topics[0];
     for (let topic of topics){
         let li = document.createElement("li");
         li.innerHTML = topic.tName;
@@ -119,17 +113,22 @@ async function unitChanged(event){
         let unit = await callServer(url,'GET');
         currentUnit.topics = unit.topics;
         currentUnit.unit = unit.unit[0];
+        currentUnit.currentTopic = unit.topics[0];
         fillTopics(unit.topics);
         fillInfobar(currentUnit.topics[0]);
     }
 }
 
 function setCurrentTopic(event){
-    currentUnit.currentTopic = (currentUnit.topics.filter(topic => topic.tID == event.target.value))[0];
-    currentUnit.currentTopic.notes = [];
+    storeTopicChanges();
+    currentUnit.currentTopic = (currentUnit.topics.filter(topic => topic.tName == event.target.textContent))[0];
     fillInfobar(currentUnit.currentTopic);
+    fillNotes();
 }
-
+function storeTopicChanges(){
+    currentUnit.topics = currentUnit.topics.filter(topic => topic.tName != currentUnit.currentTopic.tName);
+    addTopic();
+}
 function fillInfobar(topic){
     $('#unitTitle').textContent = currentUnit.unit.uTitle;
     $('#topicName').value = topic.tName;
@@ -181,17 +180,35 @@ function sendUnit(){
     }
     let response = callServer('/api/unit',"POST",unit);
 }
-
-function sendTopic(){
-
-    let topic = {
-        name: $('#topicName').value,
-        uID: $('#units').value,
-        leader: $('#leader').value,
-        weeks: $('#tWeeks').value
+function notesToJSON(){
+    const noteList = $("#mainContentFlex").children;
+    let notes = {};
+    if (noteList.length != 0 ){
+        for (let i in noteList){
+            if (i == "length") break;
+            let note = {
+                title: noteList[i].querySelector('#nTitle').value,
+                data: noteList[i].querySelector('.ql-editor').innerHTML
+            }
+            notes["note" + i] = note;
+        }
     }
-    let response = callServer('/api/topic',"POST",topic);
-    refreshTopics();
+    $("#mainContentFlex").innerHTML = " ";
+    return(notes);
+}
+
+function addTopic(){
+    let notes = JSON.stringify(notesToJSON());
+    let topic = {
+        tName: $('#topicName').value,
+        uID: $('#units').value,
+        tOrder: currentUnit.topics.length + 1,
+        tleader: $('#leader').value,
+        tWeeks: $('#tWeeks').value,
+        tNotes: notes
+    }
+    currentUnit.topics.push(topic);
+    fillTopics(currentUnit.topics);
 }
 
 
@@ -200,25 +217,48 @@ async function getUnits(){
     return(units);
 }
 
+
 function addNote(){
     const newNote = window.note.content.cloneNode(true);
-    let noteList = currentUnit.currentTopic.notes;
-    const nID = "note" + noteList.length;
+    let noteList = JSON.parse(currentUnit.currentTopic.tNotes);
+    const nID = "note" + Object.keys(noteList).length;
     const editor = newNote.querySelector("#editor");
-    editor.id = "editor" + noteList.length;
+    editor.id = "editor" + Object.keys(noteList).length;
+    newNote.querySelector('.contentBox').id = nID;
+    newNote.querySelector('button').addEventListener('click',removeNote);
 
-    newNote.id = nID;
     let note = {
-        id: nID,
         title: null,
-        data: null
+        data: null,
     }
-    currentUnit.currentTopic.notes += note;
-    const plusNote = $('#plusNote');
-    $('#mainContentFlex').insertBefore(newNote,plusNote);
+    noteList[nID] = note;
+    currentUnit.currentTopic.tNotes = JSON.stringify(noteList);
+
+    $('#mainContentFlex').appendChild(newNote);
     let quill = new Quill(("#" + editor.id), {
       theme: 'snow'
     });
+
+}
+
+function removeNote(event){
+    let note = event.target.parentNode;
+    currentUnit.currentTopic
+    note.remove();
+
+}
+
+function fillNotes(){
+    $('#mainContentFlex').innerHTML = "";
+    let notes = JSON.parse(currentUnit.currentTopic.tNotes);
+    for (let i in notes){
+        addNote();
+        let nID = '#' + i;
+        let note = $(nID);
+        note.querySelector('#nTitle').value = notes[i].title;
+        note.querySelector('.ql-editor').innerHTML = notes[i].data;
+    }
+
 }
 
 

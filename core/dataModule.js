@@ -109,8 +109,8 @@ module.exports.addUnit = async function(unit){
 module.exports.addTopic = async function(topic){
     const sql = await init();
     let query = 'INSERT into topics(??) Values (?)';
-    let coulumns = ['tName','uID',"tLeader",'tWeeks'];
-    let values = [topic.name,topic.uID,topic.leader,topic.weeks];
+    let coulumns = ['tName','uID',"tLeader",'tWeeks','tOrder','tNotes'];
+    let values = [topic.name,topic.uID,topic.leader,topic.weeks,topic.order,topic.notes];
     query = sql.format(query,[coulumns,values]);
     try{
         let result = await sql.query(query);
@@ -118,6 +118,9 @@ module.exports.addTopic = async function(topic){
     }catch(err){
         throw err;
     }
+}
+
+module.exports.updateTopic = async function(topic){
 
 }
 
@@ -144,14 +147,20 @@ module.exports.findOrAdd = async function(user){
 module.exports.topicsByUnit = async function(uID){
     const sql = await init();
     let query = `SELECT
-    topics.tID, topics.tName, topics.tWeeks,
-    lecturers.fName, lecturers.lName
-    FROM topics
-    JOIN lecturers ON topics.tLeader = lecturers.lID
-    JOIN units ON topics.uID = units.uID
-    WHERE topics.uID = ?`;
+        topics.tID, topics.tName, topics.tWeeks,
+        topics.tOrder, topics.tNotes,
+        topics.tLeader
+        FROM topics
+        JOIN lecturers ON topics.tLeader = lecturers.lID
+        JOIN units ON topics.uID = units.uID
+        WHERE topics.uID = ?`;
     query = sql.format(query,uID);
     let results = await sql.query(query);
+    console.log(results[0]);
+    for (let topic of results[0]){
+        if (topic.tNotes == null) topic.tNotes == {};
+    }
+    console.log(results[0]);
     return results[0];
 }
 

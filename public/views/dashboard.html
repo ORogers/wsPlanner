@@ -44,7 +44,8 @@
                 <li class="unitInfo"><h2 id="unitTitle">Loading</h2></li>
                 <li class="unitInfo"><a href="">&#9432;</a></li>
                 <input type="submit"  class="topicInfo" value="Delete" onclick="" >
-                <input type="submit"  class="topicInfo" value="Save" onclick="sendTopic()" >
+                <input type="submit"  class="topicInfo" value="Save" onclick="addTopic()" >
+                <input type="submit" class="topicInfo" value="Add Note" onclick="addNote()" >
                 <li class="topicInfo">
                     <label>Number of weeks:</label>
                     <input id="tWeeks" type="number" placeholder="Weeks"/>
@@ -62,9 +63,7 @@
         </div>
 
         <div id="mainContentFlex">
-            <div id="plusNote" class="contentBox mainContent">
-                <a onclick="addNote()">+</a>
-            </div>
+
         </div>
 
     <footer>
@@ -73,7 +72,8 @@
 </div>
 <template id="note">
     <div class="contentBox mainContent">
-        <input />
+        <input id="nTitle" />
+        <button>Delete</button>
         <div id="editor"></div>
     </div>
 </template>
