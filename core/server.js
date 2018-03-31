@@ -43,9 +43,13 @@ app.get('/api/unit',getUnits)
 
 app.post('/api/unit',addUnit);
 
+app.put('/api/unit',updateUnit);
+
 app.post('/api/topic',addTopic);
 
 app.get('/api/topics',sendTopics);
+
+//app.put('/api/topics',updateTopics);
 
 
 
@@ -93,6 +97,25 @@ async function addUnit(req,res){
     }
     let result = await db.addUnit(unit);
     res.send(result);
+
+}
+
+async function updateUnit(req,res){
+    let user = await db.findUser(req.user);
+    if(await db.isCoor(user.lID,req.query.uID)){
+        let unit = {
+            uID: req.query.uID,
+            title: req.body.title,
+            sTitle:req.body.sTitle,
+            desc: req.body.desc,
+            weeks: req.body.weeks
+        }
+        let result = await db.updateUnit(unit);
+        res.sendStatus(200);
+    }else{
+        res.sendStatus(401);
+    }
+
 
 }
 

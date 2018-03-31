@@ -50,14 +50,6 @@ async function testAuth(){
 
 async function fillDashboard(){
     let units = await getUnits();
-    // let topicList = document.querySelectorAll(".topics");
-    // for (let topic of topicList){
-    //     topic.addEventListener("ondragstart",dragStarted);
-    //     topic.addEventListener("ondragover",draggingOver);
-    //     topic.addEventListener("ondrop",dropped);
-    // }
-
-    //Fills unit list
 
     fillUnitList(units);
     let user = JSON.parse(localStorage.upUser)
@@ -123,7 +115,7 @@ function setCurrentTopic(event){
     storeTopicChanges();
     currentUnit.currentTopic = (currentUnit.topics.filter(topic => topic.tName == event.target.textContent))[0];
     fillInfobar(currentUnit.currentTopic);
-    fillNotes();
+    //fillNotes();
 }
 function storeTopicChanges(){
     currentUnit.topics = currentUnit.topics.filter(topic => topic.tName != currentUnit.currentTopic.tName);
@@ -211,12 +203,20 @@ function addTopic(){
     fillTopics(currentUnit.topics);
 }
 
-
 async function getUnits(){
     let units = await callServer('/api/unit',"GET");
     return(units);
 }
 
+async function updateTest(){
+    let unit = {
+        title: $('#uName').value,
+        sTitle: $('#uSName').value,
+        desc: $('#uDesc').value,
+        weeks: $('#uWeeks').value
+    }
+    let response = callServer('/api/unit?uID=6',"PUT",unit);
+}
 
 function addNote(){
     const newNote = window.note.content.cloneNode(true);

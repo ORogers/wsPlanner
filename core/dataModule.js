@@ -104,7 +104,49 @@ module.exports.addUnit = async function(unit){
     }
 }
 
+ module.exports.updateUnit = async function(unit){
+     const sql = await init();
+     let query = 'UPDATE units set uTitle = ?, uShortTitle= ?, uDesc = ?, uWeeks = ? WHERE uID = ?';
+     const values = [unit.title, unit.sTitle, unit.desc, unit.weeks, unit.uID];
+     query = sql.format(query, values);
+     try{
+         let result = await sql.query(query);
+         return result;
+     }catch(err){
+         throw err;
+     }
+ }
 
+ module.exports.isCoor = async function(lID,uID){
+    const sql = await init();
+    let query = 'SELECT * FROM units WHERE uCoor = ?  AND uID = ?'
+    let values = [lID,uID];
+    try{
+        let result = await sql.query(sql.format(query, values));
+        if (result[0].length == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }catch(err){
+        throw err;
+    }
+}
+module.exports.isCoauth = async function(lID,uID){
+    const sql = await init();
+    let query = 'SELECT * FROM coauthors WHERE lID = ?  AND uID = ?'
+    let values = [lID,uID];
+    try{
+        let result = await sql.query(sql.format(query, values));
+        if (result[0].length == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }catch(err){
+        throw err;
+    }
+}
 
 module.exports.addTopic = async function(topic){
     const sql = await init();
