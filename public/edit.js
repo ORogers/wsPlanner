@@ -3,6 +3,7 @@
 window.onload = function() {
     loadEditPage();
     $('#saveEdits').addEventListener('click',updateUnit);
+    $('#deleteUnit').addEventListener('click',deleteUnit);
 
 };
 
@@ -24,32 +25,53 @@ async function loadEditPage(){
     $("#userPhoto").src = user.Paa
     $(".g-signin2").style.display = "none";
     let unit = await getUnitDetails();
+    if(unit){
+        $('#uName').value = unit.uTitle;
+        $('#uSName').value = unit.uShortTitle;
+        $('#uDesc').value = unit.uDesc;
+        $('#uWeeks').value = unit.uWeeks;
+    }else{
+        window.location.href = "/dashboard.html";
+    }
 
-    $('#uName').value = unit.uTitle;
-    $('#uSName').value = unit.uShortTitle;
-    $('#uDesc').value = unit.uDesc;
-    $('#uWeeks').value = unit.uWeeks;
 
 }
 
 async function updateUnit(){
-    $('#saveEdits').value ="Saving Changes..."
-    let unit = {
-        title: $('#uName').value,
-        sTitle: $('#uSName').value,
-        desc: $('#uDesc').value,
-        weeks: $('#uWeeks').value
+    if(validateAddUnit()){
+        $('#saveEdits').value ="Saving Changes..."
+        let unit = {
+            title: $('#uName').value,
+            sTitle: $('#uSName').value,
+            desc: $('#uDesc').value,
+            weeks: $('#uWeeks').value
+        }
+
+        let url = '/api/unit?uID=' + urlToID();
+        let res = await callServer(url,"PUT",unit);
+
+        if(res.response == "OK"){
+            $('#saveEdits').value ="Changes Saved";
+            setTimeout(()=> $('#saveEdits').value ="Save Edits", 2000);
+        }else{
+            $('#saveEdits').value ="Error Try Again";
+            setTimeout(() => $('#saveEdits').value ="Save Edits", 2000);
+        }
     }
+}
 
-    let url = '/api/unit?uID=' + urlToID();
-    let res = await callServer(url,"PUT",unit);
+async function deleteUnit(){
+    let cont = confirm("Are you sure you want to delete this unit?\nOnce a unit has been deleted it and its topics cannot be recoverd.")
+    if(cont){
+        let url = '/api/unit?uID=' + urlToID();
+        let res = await callServer(url,"DELETE");
 
-    if(res.response == "OK"){
-        $('#saveEdits').value ="Changes Saved";
-        setTimeout(()=> $('#saveEdits').value ="Save Edits", 3000);
-    }else{
-        $('#saveEdits').value ="Error Try Again";
-        setTimeout(() => $('#saveEdits').value ="Save Edits", 3000);
+        if(res.response == "OK"){
+            window.location.href = "/dashboard.html";
+        }else{
+            $('#deleteUnit').value ="Error Deleting, Try Again";
+            setTimeout(() => $('#saveEdits').value ="Delete Unit", 2000);
+        }
     }
 
 }

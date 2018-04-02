@@ -78,6 +78,8 @@ function fillTopics(topics){
     let topicsList = $('#topicList');
     topicsList.innerHTML= "";
     currentUnit.currentTopic = topics[0];
+
+
     for (let topic of topics){
         let li = document.createElement("li");
         li.innerHTML = topic.tName;
@@ -101,14 +103,17 @@ async function unitChanged(event){
     if (event.target.value == "+"){
         document.location.href = '/addUnit.html';
     }else{
+        saveTopics();
         let url = '/api/unit?uID=' + event.target.value;
         let unit = await callServer(url,'GET');
+        console.log(unit);
         currentUnit.topics = unit.topics;
         currentUnit.unit = unit.unit[0];
         currentUnit.currentTopic = unit.topics[0];
         fillTopics(unit.topics);
         fillInfobar(currentUnit.topics[0]);
         $("#mainContentFlex").innerHTML = " ";
+        fillNotes();
     }
 }
 
@@ -169,14 +174,23 @@ function dropped(evt){
 
 }
 
-function sendUnit(){
-    let unit = {
-        title: $('#uName').value,
-        sTitle: $('#uSName').value,
-        desc: $('#uDesc').value,
-        weeks: $('#uWeeks').value
+async function sendUnit(){
+    if(validateAddUnit()){
+        $('#submitUnit').value = "Sending Unit... "
+        let unit = {
+            title: $('#uName').value,
+            sTitle: $('#uSName').value,
+            desc: $('#uDesc').value,
+            weeks: $('#uWeeks').value
+        }
+        let response = await callServer('/api/unit',"POST",unit);
+        if(response[1] == null){
+            window.location.href = "/dashboard.html"
+        }else{
+            $('#submitUnit').value = "Error"
+            setTimeout(() => $('#submitUnit').value = "Add Unit",2000);
+        }
     }
-    let response = callServer('/api/unit',"POST",unit);
 }
 
 
@@ -202,13 +216,14 @@ function addTopicToList(tID){
     let topic = {
         tName: $('#topicName').value,
         uID: $('#units').value,
-        tOrder: currentUnit.topics.length + 1,
+        tOrder: currentUnit.currentTopic.tOrder,
         tLeader: $('#leader').value,
         tWeeks: $('#tWeeks').value,
         tNotes: notes
     }
     if(tID) topic.tID = tID;
     currentUnit.topics.push(topic);
+    currentUnit.topics.sort((a,b) => a.tOrder - b.tOrder);
     fillTopics(currentUnit.topics);
 }
 
@@ -236,6 +251,7 @@ async function saveTopics(){
     };
     let response = await callServer('/api/topics','PUT',data);
     fillNotes();
+    fillInfobar(currentUnit.topics[0]);
     console.log(response);
 }
 
@@ -283,6 +299,36 @@ function removeNote(event){
     note.remove();
 
 }
+
+function removeTopic(event){
+
+    let cont =  confirm("Are you sure you want to delete this topic? Once a topic is deleted it cannot undone.");
+
+    if(cont){
+        if(currentUnit.currentTopic.tID != undefined){
+            deleteTopic(currentUnit.unit.uID, currentUnit.currentTopic.tID);
+        }
+
+        currentUnit.topics = currentUnit.topics.filter(topic => topic.tID != currentUnit.currentTopic.tID);
+        currentUnit.currentTopic = currentUnit.topics[0]
+        fillInfobar(currentUnit.currentTopic);
+        fillTopics(currentUnit.topics);
+        $("#mainContentFlex").innerHTML = " ";
+        fillNotes();
+    }
+
+}
+
+async function deleteTopic(uID,tID){
+    let data = {
+        uID: uID,
+        tID: tID
+    }
+
+    let response = await callServer('/api/topic','DELETE',data);
+
+}
+
 
 function fillNotes(){
     $('#mainContentFlex').innerHTML = "";

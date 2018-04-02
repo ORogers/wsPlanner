@@ -33,10 +33,7 @@ app.use("/",express.static(util.public));
 app.use("/",express.static(util.views));
 
 
-app.get('/api', (req,res) =>{
-    res.send(req.user.displayName + ' is logged in');
-});
-
+//routes
 app.get('/api/login', onLogin);
 
 app.get('/api/unit',getUnits)
@@ -45,12 +42,17 @@ app.post('/api/unit',addUnit);
 
 app.put('/api/unit',updateUnit);
 
+app.delete('/api/unit',deleteUnit);
+
 app.post('/api/topic',addTopic);
+
+app.delete('/api/topic',deleteTopic);
 
 app.get('/api/topics',sendTopics);
 
 app.put('/api/topics',updateOrAddTopics);
 
+app.get('*', (req, res) => res.sendStatus(404));
 
 
 // Starts server
@@ -96,6 +98,30 @@ async function addUnit(req,res){
         weeks: req.body.weeks
     }
     let result = await db.addUnit(unit);
+
+    //adds welcome topic to new units added
+    let uID =  result[0].insertId;
+    let notes = {
+            note0:{
+                "title":"Welcome note",
+                "data":"<h1><strong><u>Welcome</u></strong></h1><p>You can fill notes with anything you want, like Lecture or practical plans, links to lecture slides or online resources, anything that will help you to plan your unit.</p>"
+            },
+            note1:{
+                "title":"How To",
+                "data":"<h2><u>Create new unit</u></h2><p>To create a new topic navigate to the my units list and select 'add new unit'. From there you will be prompted to fill in the details of the unit. Then click add unit and the unit will be save</p><p><br></p><h2><u>Add new topic</u></h2><p>To add a new topic, navigate to the unit you wish to at a topic to using the 'My Units' list. Then click the plus button at the bottom of the topics list.</p><p><br></p><p><br></p>"
+            }
+        }
+
+    notes = JSON.stringify(notes);
+    let tutorial ={
+        tName: "Tutorial",
+        tNotes: notes,
+        tOrder: 0,
+        tWeeks: 1,
+        uID: uID,
+        tLeader: user.lID
+    }
+    db.addTopic(tutorial);
     res.send(result);
 
 }
@@ -117,9 +143,43 @@ async function updateUnit(req,res){
     }
 }
 
+async function deleteUnit(req,res){
+    if(req.query.uID == undefined || req.query.uID <= 0){
+        res.sendStatus(400);
+    }
+    try{
+        let user = await db.findUser(req.user);
+        if(await db.isCoor(user.lID,req.query.uID)){
+            db.deleteTopicsByUnit(req.query.uID);
+            db.deleteUnit(req.query.uID);
+            res.sendStatus(200);
+        }else{
+            res.sendStatus(401);
+        }
+    }catch(err){
+        console.log(err);
+        res.sendStatus(500);
+    }
+}
+
 async function addTopic(req,res){
     let result = await db.addTopic(req.body);
     res.send(result);
+}
+
+async function deleteTopic(req,res){
+    let user = await db.findUser(req.user);
+    try{
+        if(await db.isCoor(user.lID,req.body.uID)){
+            let result = await db.deleteTopic(req.body.tID);
+            res.sendStatus(200);
+        }else{
+            res.sendStatus(401);
+        }
+    }catch(err){
+        res.sendStatus(500);
+    }
+
 }
 
 async function sendTopics(req,res){
@@ -143,7 +203,7 @@ async function updateOrAddTopics(req,res){
             if(topic.tID != undefined){
                 existingTopics.push(topic);
             }else{
-                await db.addTopic(topic);
+                db.addTopic(topic);
             }
         }
         if (existingTopics.length > 0) await db.updateTopics(existingTopics);

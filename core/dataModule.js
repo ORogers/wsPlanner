@@ -117,6 +117,17 @@ module.exports.addUnit = async function(unit){
      }
  }
 
+ module.exports.deleteUnit = async function(uID){
+     const sql = await init();
+     let query = sql.format('DELETE FROM units WHERE uID = ?',uID);
+     try{
+         let result = await sql.query(query);
+         return result;
+     }catch(err){
+         throw err;
+     }
+ }
+
  module.exports.isCoor = async function(lID,uID){
     const sql = await init();
     let query = 'SELECT * FROM units WHERE uCoor = ?  AND uID = ?'
@@ -154,6 +165,28 @@ module.exports.addTopic = async function(topic){
     const coulumns = ['tName','uID',"tLeader",'tWeeks','tOrder','tNotes'];
     let values = [topic.tName,topic.uID,topic.tLeader,topic.tWeeks,topic.tOrder,topic.tNotes];
     query = sql.format(query,[coulumns,values]);
+    try{
+        let result = await sql.query(query);
+        return result;
+    }catch(err){
+        throw err;
+    }
+}
+
+module.exports.deleteTopic = async function(tID){
+    const sql = await init();
+    let query = sql.format('DELETE FROM topics WHERE tID = ?',tID);
+    try{
+        let result = await sql.query(query);
+        return result;
+    }catch(err){
+        throw err;
+    }
+}
+
+module.exports.deleteTopicsByUnit = async function(uID){
+    const sql = await init();
+    let query = sql.format('DELETE FROM topics WHERE uID = ?',uID);
     try{
         let result = await sql.query(query);
         return result;
