@@ -40,7 +40,7 @@ async function shutDown() {
 
 module.exports.findUser = async function findUser(user){
     const sql = await init();
-    let query = 'SELECT * from Lecturers where email = ?';
+    let query = 'SELECT * from lecturers where email = ?';
     try{
         let result = await sql.query(sql.format(query,user.emails[0].value));
 
@@ -198,7 +198,7 @@ module.exports.topicExists = async function(tID){
 module.exports.findOrAdd = async function(user){
     const sql = await init();
 
-    let query = 'SELECT * from Lecturers where email = ?';
+    let query = 'SELECT * from lecturers where email = ?';
 
     try{
         let result = await sql.query(sql.format(query,user.emails[0].value));
@@ -239,7 +239,7 @@ async function addUser(user){
     const values = [user.name.givenName, user.name.familyName, user.emails[0].value];
     const columns = ["fName","lName","email"] ;
 
-    let query = 'INSERT into Lecturers(??) values (?)';
+    let query = 'INSERT into lecturers(??) values (?)';
     let result = await sql.query(query,[columns,values]);
 
     return(result);
