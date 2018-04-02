@@ -14,7 +14,7 @@
         <ul>
             <li id="headerTitle"><h1>UPlanner</h1></li>
             <li class="navButtons userMenu">
-                <img id="userPhoto" src="">
+                <img id="userPhoto" src="." alt="profile picture">
                 <div class="userMenu-content">
                     <a>Settings</a>
                     <a onclick="TogetherJS(this); return false;">Collaborate</a>
@@ -27,11 +27,8 @@
 
     <div id="sidebar">
         <ul id="sideList">
-            <li><h2>My Units</h2>
-                <li>
-                    <select id="units"></select>
-                </li>
-            </li>
+            <li><h2>My Units</h2></li>
+            <li><select id="units"></select></li>
             <li id="sideTitle"><h2>Topics</h2></li>
         </ul>
         <ul id="topicList"></ul>
@@ -42,10 +39,11 @@
         <div id="unitInfo" class="contentBox ">
             <ul>
                 <li class="unitInfo"><h2 id="unitTitle">Loading</h2></li>
-                <li class="unitInfo"><a href="">&#9432;</a></li>
-                <input type="submit"  class="topicInfo" value="Delete" onclick="" >
-                <input type="submit"  class="topicInfo" value="Save" onclick="addTopic()" >
-                <input type="submit" class="topicInfo" value="Add Note" onclick="addNote()" >
+                <li class="unitInfo"><a onclick="editUnit()">&#9432;</a></li>
+                <li class="unitInfo"><input type="submit" value="Save" onclick="saveTopics()"></li>
+                <li class="topicInfo"><input type="submit" value="Delete" onclick=""></li>
+                <li class="topicInfo"><input type="submit" value="Add Note" onclick="addNote()"></li>
+                <li class="topicInfo" ><input type="submit" value="Save" onclick="addTopicToList()"></li>
                 <li class="topicInfo">
                     <label>Number of weeks:</label>
                     <input id="tWeeks" type="number" placeholder="Weeks"/>

@@ -49,7 +49,7 @@ app.post('/api/topic',addTopic);
 
 app.get('/api/topics',sendTopics);
 
-//app.put('/api/topics',updateTopics);
+app.put('/api/topics',updateOrAddTopics);
 
 
 
@@ -115,20 +115,10 @@ async function updateUnit(req,res){
     }else{
         res.sendStatus(401);
     }
-
-
 }
 
 async function addTopic(req,res){
-    let topic = {
-        name: req.body.name,
-        order: req.body.tOrder,
-        uID: req.body.uID,
-        leader: req.body.leader,
-        weeks: req.body.weeks,
-        notes: req.body.notes
-    }
-    let result = await db.addTopic(topic);
+    let result = await db.addTopic(req.body);
     res.send(result);
 }
 
@@ -141,6 +131,25 @@ async function sendTopics(req,res){
         let results = await db.topicsByUnit(req.query.uID);
         res.status(200).json(results);
     }catch(err){
+        res.sendStatus(500);
+    }
+}
+
+async function updateOrAddTopics(req,res){
+    let topics = req.body.topics;
+    let existingTopics = [];
+    try{
+        for (let topic of topics){
+            if(topic.tID != undefined){
+                existingTopics.push(topic);
+            }else{
+                await db.addTopic(topic);
+            }
+        }
+        if (existingTopics.length > 0) await db.updateTopics(existingTopics);
+        res.sendStatus(200);
+    }catch(err){
+        console.log(err);
         res.sendStatus(500);
     }
 }

@@ -151,8 +151,8 @@ module.exports.isCoauth = async function(lID,uID){
 module.exports.addTopic = async function(topic){
     const sql = await init();
     let query = 'INSERT into topics(??) Values (?)';
-    let coulumns = ['tName','uID',"tLeader",'tWeeks','tOrder','tNotes'];
-    let values = [topic.name,topic.uID,topic.leader,topic.weeks,topic.order,topic.notes];
+    const coulumns = ['tName','uID',"tLeader",'tWeeks','tOrder','tNotes'];
+    let values = [topic.tName,topic.uID,topic.tLeader,topic.tWeeks,topic.tOrder,topic.tNotes];
     query = sql.format(query,[coulumns,values]);
     try{
         let result = await sql.query(query);
@@ -162,8 +162,37 @@ module.exports.addTopic = async function(topic){
     }
 }
 
-module.exports.updateTopic = async function(topic){
+module.exports.updateTopics = async function(topics){
+    const sql = await init();
+    let queries = '';
+    //const coulumns = ['tName','uID',"tLeader",'tWeeks','tOrder','tNotes'];
+    topics.forEach(function(topic){
+        let values = [topic.tName,topic.tLeader,topic.tWeeks,topic.tOrder,topic.tNotes,topic.tID];
+        queries += sql.format("UPDATE topics SET tName = ?, tLeader = ?, tWeeks = ?, tOrder = ?, tNotes = ? WHERE tID = ?;",values)
+    });
 
+    try{
+        let result = await sql.query(queries);
+        return result;
+    }catch(err){
+        throw err;
+    }
+}
+
+module.exports.topicExists = async function(tID){
+    const sql = await init();
+    let query = 'SELECT * FROM topics WHERE tID = ?'
+    query = sql.format(query,tID);
+    try{
+        let result = await sql.query(query);
+        if (result[0].length == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }catch(err){
+        throw err;
+    }
 }
 
 module.exports.findOrAdd = async function(user){
@@ -191,24 +220,18 @@ module.exports.topicsByUnit = async function(uID){
     let query = `SELECT
         topics.tID, topics.tName, topics.tWeeks,
         topics.tOrder, topics.tNotes,
-        topics.tLeader
+        topics.tLeader, topics.uID
         FROM topics
         JOIN lecturers ON topics.tLeader = lecturers.lID
         JOIN units ON topics.uID = units.uID
         WHERE topics.uID = ?`;
     query = sql.format(query,uID);
     let results = await sql.query(query);
-    console.log(results[0]);
     for (let topic of results[0]){
         if (topic.tNotes == null) topic.tNotes == {};
     }
-    console.log(results[0]);
     return results[0];
 }
-
-
-
-
 
 async function addUser(user){
     const sql = await init();

@@ -88,18 +88,18 @@ function fillTopics(topics){
         li.addEventListener("click",setCurrentTopic);
         li.setAttribute('value',topic.tID);
         li.setAttribute('draggable',true);
-        li.style.height = String (6 * topic.tWeeks) + "vh" ;
+        li.style.height = String (6 * topic.tWeeks) + "vh";
         topicsList.appendChild(li);
     }
     let li = document.createElement("li");
     li.innerHTML = "+";
-    li.setAttribute('value','+');
+    li.addEventListener('click',addEmptyTopic)
     topicsList.appendChild(li);
 }
 
 async function unitChanged(event){
     if (event.target.value == "+"){
-        document.location.href = '/editUnit.html';
+        document.location.href = '/addUnit.html';
     }else{
         let url = '/api/unit?uID=' + event.target.value;
         let unit = await callServer(url,'GET');
@@ -108,6 +108,7 @@ async function unitChanged(event){
         currentUnit.currentTopic = unit.topics[0];
         fillTopics(unit.topics);
         fillInfobar(currentUnit.topics[0]);
+        $("#mainContentFlex").innerHTML = " ";
     }
 }
 
@@ -115,12 +116,17 @@ function setCurrentTopic(event){
     storeTopicChanges();
     currentUnit.currentTopic = (currentUnit.topics.filter(topic => topic.tName == event.target.textContent))[0];
     fillInfobar(currentUnit.currentTopic);
-    //fillNotes();
+    $("#mainContentFlex").innerHTML = " ";
+    fillNotes();
 }
+
 function storeTopicChanges(){
-    currentUnit.topics = currentUnit.topics.filter(topic => topic.tName != currentUnit.currentTopic.tName);
-    addTopic();
+    if(currentUnit != {}){
+        currentUnit.topics = currentUnit.topics.filter(topic => topic.tID != currentUnit.currentTopic.tID);
+        addTopicToList(currentUnit.currentTopic.tID);
+    }
 }
+
 function fillInfobar(topic){
     $('#unitTitle').textContent = currentUnit.unit.uTitle;
     $('#topicName').value = topic.tName;
@@ -172,6 +178,8 @@ function sendUnit(){
     }
     let response = callServer('/api/unit',"POST",unit);
 }
+
+
 function notesToJSON(){
     const noteList = $("#mainContentFlex").children;
     let notes = {};
@@ -189,18 +197,46 @@ function notesToJSON(){
     return(notes);
 }
 
-function addTopic(){
+function addTopicToList(tID){
     let notes = JSON.stringify(notesToJSON());
     let topic = {
         tName: $('#topicName').value,
         uID: $('#units').value,
         tOrder: currentUnit.topics.length + 1,
-        tleader: $('#leader').value,
+        tLeader: $('#leader').value,
         tWeeks: $('#tWeeks').value,
         tNotes: notes
     }
+    if(tID) topic.tID = tID;
     currentUnit.topics.push(topic);
     fillTopics(currentUnit.topics);
+}
+
+function addEmptyTopic(){
+    storeTopicChanges();
+    $('#topicName').value = "New Topic";
+    $('#leader').value = null;
+    $('#tWeeks').value = 1;
+    let topic = {
+        tName: $('#topicName').value,
+        uID: $('#units').value,
+        tOrder: currentUnit.topics.length + 1,
+        tleader: $('#leader').value,
+        tWeeks: 1
+    }
+    currentUnit.topics.push(topic);
+    currentUnit.currentTopic = topic;
+}
+
+async function saveTopics(){
+    storeTopicChanges();
+    let data = {
+        uID: $('#units').value,
+        topics: currentUnit.topics
+    };
+    let response = await callServer('/api/topics','PUT',data);
+    fillNotes();
+    console.log(response);
 }
 
 async function getUnits(){
@@ -221,9 +257,9 @@ async function updateTest(){
 function addNote(){
     const newNote = window.note.content.cloneNode(true);
     let noteList = JSON.parse(currentUnit.currentTopic.tNotes);
-    const nID = "note" + Object.keys(noteList).length;
+    const nID = "note" + $('#mainContentFlex').childElementCount;
     const editor = newNote.querySelector("#editor");
-    editor.id = "editor" + Object.keys(noteList).length;
+    editor.id = "editor" + $('#mainContentFlex').childElementCount;
     newNote.querySelector('.contentBox').id = nID;
     newNote.querySelector('button').addEventListener('click',removeNote);
 
@@ -238,7 +274,7 @@ function addNote(){
     let quill = new Quill(("#" + editor.id), {
       theme: 'snow'
     });
-
+    return(newNote);
 }
 
 function removeNote(event){
@@ -252,13 +288,17 @@ function fillNotes(){
     $('#mainContentFlex').innerHTML = "";
     let notes = JSON.parse(currentUnit.currentTopic.tNotes);
     for (let i in notes){
-        addNote();
+        let newNote = addNote();
         let nID = '#' + i;
         let note = $(nID);
         note.querySelector('#nTitle').value = notes[i].title;
         note.querySelector('.ql-editor').innerHTML = notes[i].data;
     }
 
+}
+
+function editUnit(){
+    window.location.href = '/editUnit.html?uID=' + $('#units').value
 }
 
 

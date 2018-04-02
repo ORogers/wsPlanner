@@ -87,6 +87,7 @@ header {
   border-bottom: solid;
   background-color: #4296D2;
   text-align: left;
+  min-height: 3em;
 }
 
 #headerTitle{
@@ -95,7 +96,6 @@ header {
     color: #5E225F;
     padding: 0em 0.5em;
     float: left;
-    margin: auto;
     display: inline-block;
 
 }
@@ -233,7 +233,13 @@ header ul li {
     grid-area: info;
     margin: 0.5em 0.4em;
     display:inline-block;
-    width: 90%
+    width: 90%;
+    padding: 0;
+
+}
+
+#unitTitle{
+    font-size: large;
 }
 
 #unitInfo ul {
@@ -260,6 +266,7 @@ header ul li {
 
 
 
+
 .mainContent{
     overflow-x: hidden;
     height: 67vh;
@@ -274,10 +281,13 @@ header ul li {
     padding: 2em;
     background-color: white;
 }
+
+#loginInfo{
+    grid-area: cont;
+}
 #loginBox{
-    margin-top: 5em;
-    margin-left: 40%;
-    margin-right: 40%;
+
+    margin: 5em 40%;
     width: 20em;
 }
 
@@ -314,7 +324,7 @@ footer {
         "footer";
 
       grid-template-columns: 1fr;
-      grid-template-rows: 5em 8em;
+      grid-template-rows: 5em 0.5fr;
       margin: 0;
       padding: 0;
       height: 100vh;
@@ -323,8 +333,11 @@ footer {
         width: 45%;
 
     }
-    #sideList{
+    #sidebar{
         display: none;
+    }
+    .topicInfo, .unitInfo {
+        margin: 0
     }
 }
 
@@ -339,7 +352,7 @@ footer {
         "footer";
 
       grid-template-columns: 1fr;
-      grid-template-rows: 5em 8em;
+      grid-template-rows: 5em 0.5fr;
       margin: 0;
       padding: 0;
       height: 100vh;
@@ -348,7 +361,7 @@ footer {
         width: 100%;
 
     }
-    #sideList{
+    #sidebar{
         display: none;
     }
 }
