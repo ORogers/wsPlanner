@@ -28,8 +28,31 @@ app.use("/",express.static(util.public));
 // static views
 app.use("/",express.static(util.views));
 
+// server api
+// GET    /api/login            -adds the user to the lecturers database if the
+//                               the user is not already in the database
+// GET   /api/units             -if the request is sent without a query perameter
+//                               a list containg objects representing the units
+//                               returned
+//       ?uID=                   if request is made with a query perameter of uID (Unit ID)
+//                               a JSON objec containg the units topics and the unit itself
+//                               is returned in the format {topics: [...], unit: {...}};
 
-//routes
+
+// GET    /api/login            -ends object containing upto 10 stories, page being
+//                               retuned and amount of pages in array in the format
+//                               {stories: [...], page: ..., pageCount: ...}
+//        ?p=                   -page number being requested, if ommited, first page is returned
+// GET    /api/stories/newest   -returns the most recently submitted story in format
+//                               {id: ..., author: ..., title: ..., text: ...}
+// GET    /api/stories/oldest   -returns the oldest story in same format as above
+// POST   /api/stories          -adds story to page and returns new story in same format as above
+//        ?author=              -a required query that must contain a string representing the authors named
+//        title=                -a required query that must contain a string representing the stories title
+//        text=                 -a required query that must contain a string representing the stories text
+// DELETE /api/storiesData      -removes story by id, returns code 200 if deleted and 404 if story is not found
+//        ?id=                  -a requierd query that must cotain a number indcating the id of the story to be deleted
+
 app.get('/api/login', onLogin);
 
 app.get('/api/unit',getUnits)

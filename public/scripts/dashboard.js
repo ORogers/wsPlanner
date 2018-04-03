@@ -82,6 +82,7 @@ async function loadUnit(uID){
     if(currentUnit != {}) saveTopics();
     let url = '/api/unit?uID=' + uID;
     let unit = await callServer(url,'GET');
+    console.log(unit);
     currentUnit.topics = unit.topics;
     currentUnit.unit = unit.unit[0];
     currentUnit.currentTopic = unit.topics[0];
