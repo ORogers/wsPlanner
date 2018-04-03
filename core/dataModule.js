@@ -162,8 +162,8 @@ module.exports.isCoauth = async function(lID,uID){
 module.exports.addTopic = async function(topic){
     const sql = await init();
     let query = 'INSERT into topics(??) Values (?)';
-    const coulumns = ['tName','uID',"tLeader",'tWeeks','tOrder','tNotes'];
-    let values = [topic.tName,topic.uID,topic.tLeader,topic.tWeeks,topic.tOrder,topic.tNotes];
+    const coulumns = ['tName','uID','tWeeks','tOrder','tNotes'];
+    let values = [topic.tName,topic.uID,topic.tWeeks,topic.tOrder,topic.tNotes];
     query = sql.format(query,[coulumns,values]);
     try{
         let result = await sql.query(query);
@@ -198,10 +198,10 @@ module.exports.deleteTopicsByUnit = async function(uID){
 module.exports.updateTopics = async function(topics){
     const sql = await init();
     let queries = '';
-    //const coulumns = ['tName','uID',"tLeader",'tWeeks','tOrder','tNotes'];
+
     topics.forEach(function(topic){
-        let values = [topic.tName,topic.tLeader,topic.tWeeks,topic.tOrder,topic.tNotes,topic.tID];
-        queries += sql.format("UPDATE topics SET tName = ?, tLeader = ?, tWeeks = ?, tOrder = ?, tNotes = ? WHERE tID = ?;",values)
+        let values = [topic.tName,topic.tWeeks,topic.tOrder,topic.tNotes,topic.tID];
+        queries += sql.format("UPDATE topics SET tName = ?, tWeeks = ?, tOrder = ?, tNotes = ? WHERE tID = ?;",values)
     });
 
     try{
@@ -253,9 +253,8 @@ module.exports.topicsByUnit = async function(uID){
     let query = `SELECT
         topics.tID, topics.tName, topics.tWeeks,
         topics.tOrder, topics.tNotes,
-        topics.tLeader, topics.uID
+         topics.uID
         FROM topics
-        JOIN lecturers ON topics.tLeader = lecturers.lID
         JOIN units ON topics.uID = units.uID
         WHERE topics.uID = ?`;
     query = sql.format(query,uID);

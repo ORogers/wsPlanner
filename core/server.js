@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+//miliseconds in one day, used for caching
+const oneDay = 86400000;
 
 app.use(GoogleAuth(config.gAuth.clientID));
 app.use('/api', GoogleAuth.guardMiddleware({
@@ -23,38 +25,53 @@ app.use('/', (req, res, next) => {
 
 
 // static files
-app.use("/",express.static(util.public));
+app.use("/",express.static(util.public, { maxAge: oneDay }));
 
 // static views
-app.use("/",express.static(util.views));
+app.use("/",express.static(util.views, { maxAge: oneDay }));
 
 // server api
+
 // GET    /api/login            -adds the user to the lecturers database if the
 //                               the user is not already in the database
-// GET   /api/units             -if the request is sent without a query perameter
+
+// GET    /api/units            -if the request is sent without a query perameter
 //                               a list containg objects representing the units
 //                               returned
-//       ?uID=                   if request is made with a query perameter of uID (Unit ID)
+
+//        ?uID=                 -if request is made with a query perameter of uID (Unit ID)
 //                               a JSON objec containg the units topics and the unit itself
-//                               is returned in the format {topics: [...], unit: {...}};
+//                               is returned in the format {topics: [...], unit: {...}}
 
+// POST   /api/unit             -this api call adds a unit to thhe database. it takes
+//                               the following values in the body: title(string),
+//                               sTitle(String), desc(String), weeks(int)
 
-// GET    /api/login            -ends object containing upto 10 stories, page being
-//                               retuned and amount of pages in array in the format
-//                               {stories: [...], page: ..., pageCount: ...}
-//        ?p=                   -page number being requested, if ommited, first page is returned
-// GET    /api/stories/newest   -returns the most recently submitted story in format
-//                               {id: ..., author: ..., title: ..., text: ...}
-// GET    /api/stories/oldest   -returns the oldest story in same format as above
-// POST   /api/stories          -adds story to page and returns new story in same format as above
-//        ?author=              -a required query that must contain a string representing the authors named
-//        title=                -a required query that must contain a string representing the stories title
-//        text=                 -a required query that must contain a string representing the stories text
-// DELETE /api/storiesData      -removes story by id, returns code 200 if deleted and 404 if story is not found
-//        ?id=                  -a requierd query that must cotain a number indcating the id of the story to be deleted
+// PUT    /api/unit?uID         -this api call will update the unit with a matching
+//                               id to the query perameter provied with the required
+//                               values in the body. it takes the following Values
+//                               in the body: title(string), sTitle(String),
+//                               desc(String), weeks(int)
+
+// DELETE /api/unit?uID         -this api call will delete the unit and all related
+//                               topics associated with the unit specified by the
+//                               query perameter
+
+// GET    /api/topics?uID       -returns all topics for the unit specified in the
+//                               query perameter
+
+// PUT    /api/topics           -this route requires two fields in the body, uID (unit ID)
+//                               topics (list of topics). it will add any new topics
+//                               to the database and update any existing topics
+
+// DELETE /api/topic            -this route is used to delete topics from the database,
+//                               it requiers two fields in the body, uID (unit ID)
+//                               and tID (topic ID);
+
 
 app.get('/api/login', onLogin);
 
+//unit routes
 app.get('/api/unit',getUnits)
 
 app.post('/api/unit',addUnit);
@@ -63,13 +80,12 @@ app.put('/api/unit',updateUnit);
 
 app.delete('/api/unit',deleteUnit);
 
-app.post('/api/topic',addTopic);
-
-app.delete('/api/topic',deleteTopic);
-
+//topic routes
 app.get('/api/topics',sendTopics);
 
 app.put('/api/topics',updateOrAddTopics);
+
+app.delete('/api/topic',deleteTopic);
 
 app.get('*', (req, res) => res.sendStatus(404));
 
@@ -138,7 +154,6 @@ async function addUnit(req,res){
         tOrder: 0,
         tWeeks: 1,
         uID: uID,
-        tLeader: user.lID
     }
     db.addTopic(tutorial);
     res.send(result);
@@ -179,11 +194,6 @@ async function deleteUnit(req,res){
         console.log(err);
         res.sendStatus(500);
     }
-}
-
-async function addTopic(req,res){
-    let result = await db.addTopic(req.body);
-    res.send(result);
 }
 
 async function deleteTopic(req,res){

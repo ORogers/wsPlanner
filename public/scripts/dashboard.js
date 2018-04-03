@@ -71,6 +71,7 @@ function fillTopics(topics){
 }
 
 function unitChanged(event){
+    if (event.target.value == "") return;
     if (event.target.value == "+"){
         document.location.href = '/addUnit.html';
     }else{
@@ -126,7 +127,6 @@ function dragStarted(evt){
 function draggingOver(e){
     //drag over
     e.preventDefault();
-    //specify operation
     e.dataTransfer.dropEffect = "move";
 }
 
@@ -134,7 +134,7 @@ function dropped(evt){
     //drop
     evt.preventDefault();
     evt.stopPropagation();
-    //update text in dragged item
+    //change text in dragged topic
     source.innerHTML = evt.target.innerHTML;
     let valueHolder = source.getAttribute("value")
     let hightHolder = source.style.height
@@ -142,7 +142,7 @@ function dropped(evt){
     source.setAttribute("value",evt.target.value);
     evt.target.setAttribute("value",valueHolder);
     evt.target.style.height = hightHolder;
-    //update text in drop target
+    //update text in target topic
     evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
 
 }
@@ -171,7 +171,6 @@ function addTopicToList(tID){
         tName: $('#topicName').value,
         uID: $('#units').value,
         tOrder: currentUnit.currentTopic.tOrder,
-        tLeader: $('#leader').value,
         tWeeks: $('#tWeeks').value,
         tNotes: notes
     }
@@ -189,7 +188,6 @@ function addEmptyTopic(){
         tName: $('#topicName').value,
         uID: $('#units').value,
         tOrder: currentUnit.topics.length + 1,
-        tleader: $('#leader').value,
         tWeeks: 1
     }
     currentUnit.topics.push(topic);
@@ -242,12 +240,12 @@ function removeNote(event){
     let note = event.target.parentNode;
     currentUnit.currentTopic
     note.remove();
-
 }
 
 function removeTopic(event){
 
-    let cont =  confirm("Are you sure you want to delete this topic? Once a topic is deleted it cannot undone.");
+    let cont =  confirm(`Are you sure you want to delete this topic? Once a
+                        topic is deleted it cannot undone.`);
 
     if(cont){
         if(currentUnit.currentTopic.tID != undefined){
@@ -269,7 +267,6 @@ async function deleteTopic(uID,tID){
         uID: uID,
         tID: tID
     }
-
     let response = await callServer('/api/topic','DELETE',data);
 
 }
