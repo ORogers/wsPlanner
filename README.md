@@ -35,34 +35,34 @@ alternatively, you can copy the contents of dbSQL.sql into MySQL
 npm start
 ```
 
-### How to use UPlanner
+## How to use UPlanner
 
-## Create new unit
+### Create new unit
 To create a new topic navigate to the my units list and select 'add new unit'. From there you will be prompted to fill in the details of the unit. Then click add unit and the unit will be save
 
-## Add new topic
+### Add new topic
 To add a new topic, navigate to the unit you wish to at a topic to using the 'My Units' list. Then click the plus button at the bottom of the topics list. A new topic will appear in the top of the in the info bar. fill in the information and press save.
 
-## Add new note
+## #Add new note
 To add a new note click the add note button in the topics bar
 
-## Re-order topics
+### Re-order topics
 To re order topics, click and drag the topic in the topics menu to the position you want it to be in.
 
-## Change or delete unit detail
+### Change or delete unit detail
 To change a units details, click the information icon next to the units long name
 
-## Delete a topic
+### Delete a topic
 to delete a topic press the delete button in the info bar.
 
 
-### Reflection
+## Reflection
 
 Explain how to run the automated tests for this system
 
 
 
-### Potential future features
+## Potential future features
 
 Explain what these tests test and why
 
