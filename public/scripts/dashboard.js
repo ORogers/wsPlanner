@@ -7,7 +7,6 @@ window.onload = function() {
     $('#saveTopics').addEventListener('click',saveTopics);
     $('#deleteTopic').addEventListener('click',removeTopic);
     $('#addNote').addEventListener('click',addNote);
-    $('#saveTopic').addEventListener('click',addTopicToList);
 };
 
 
@@ -62,6 +61,7 @@ function fillTopics(topics){
         li.setAttribute('value',topic.tID);
         li.setAttribute('draggable',true);
         li.style.height = String (6 * topic.tWeeks) + "vh";
+        li.id = "t" + topic.tID;
         topicsList.appendChild(li);
     }
     let li = document.createElement("li");
@@ -84,10 +84,10 @@ async function loadUnit(uID){
     let url = '/api/unit?uID=' + uID;
     let unit = await callServer(url,'GET');
     console.log(unit);
-    currentUnit.topics = unit.topics;
+    currentUnit.topics = unit.topics.sort((a,b) => a.tOrder - b.tOrder);
     currentUnit.unit = unit.unit[0];
     currentUnit.currentTopic = unit.topics[0];
-    fillTopics(unit.topics);
+    fillTopics(currentUnit.topics);
     fillInfobar(currentUnit.topics[0]);
     $("#mainContentFlex").innerHTML = " ";
     fillNotes();
@@ -138,13 +138,16 @@ function dropped(evt){
     source.innerHTML = evt.target.innerHTML;
     let valueHolder = source.getAttribute("value")
     let hightHolder = source.style.height
-    source.style.height = evt.target.style.height;
+    let idHolder = source.id
     source.setAttribute("value",evt.target.value);
+    source.style.height = evt.target.style.height;
+    source.id = evt.target.id;
     evt.target.setAttribute("value",valueHolder);
     evt.target.style.height = hightHolder;
+    evt.target.id = idHolder;
     //update text in target topic
     evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
-
+    saveTopicOrders();
 }
 
 
@@ -167,6 +170,7 @@ function notesToJSON(){
 
 function addTopicToList(tID){
     let notes = JSON.stringify(notesToJSON());
+
     let topic = {
         tName: $('#topicName').value,
         uID: $('#units').value,
@@ -178,6 +182,19 @@ function addTopicToList(tID){
     currentUnit.topics.push(topic);
     currentUnit.topics.sort((a,b) => a.tOrder - b.tOrder);
     fillTopics(currentUnit.topics);
+}
+
+function saveTopicOrders(){
+    for(let topic of currentUnit.topics){
+        topic.tOrder = calcTopicOrder(topic.tID)
+    }
+}
+
+
+function calcTopicOrder(tID){
+    let topic = $("#t"+tID);
+    let topicList = Array.prototype.slice.call( $('#topicList').children );
+    return topicList.indexOf(topic);
 }
 
 function addEmptyTopic(){
@@ -196,6 +213,7 @@ function addEmptyTopic(){
 
 async function saveTopics(){
     if(currentUnit.topics != undefined){
+        saveTopicOrders();
         storeTopicChanges();
         let data = {
             uID: $('#units').value,
@@ -268,7 +286,6 @@ async function deleteTopic(uID,tID){
         tID: tID
     }
     let response = await callServer('/api/topic','DELETE',data);
-
 }
 
 

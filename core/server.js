@@ -143,7 +143,11 @@ async function addUnit(req,res){
             },
             note1:{
                 "title":"How To",
-                "data":"<h2><u>Create new unit</u></h2><p>To create a new topic navigate to the my units list and select 'add new unit'. From there you will be prompted to fill in the details of the unit. Then click add unit and the unit will be save</p><p><br></p><h2><u>Add new topic</u></h2><p>To add a new topic, navigate to the unit you wish to at a topic to using the 'My Units' list. Then click the plus button at the bottom of the topics list.</p><p><br></p><p><br></p>"
+                "data":"<h2><u>Create new unit</u></h2><p>To create a new topic navigate to the my units list and select 'add new unit'. From there you will be prompted to fill in the details of the unit. Then click add unit and the unit will be save</p><p><br></p><h2><u>Add new topic</u></h2><p>To add a new topic, navigate to the unit you wish to at a topic to using the 'My Units' list. Then click the plus button at the bottom of the topics list. A new topic will appear in the top of the in the info bar. fill in the information and press save.</p><p><br></p><h2><u>Add new note</u></h2><p>to add a new note click the add note button in the topics bar</p><p><br></p><h2><br></h2>"
+            },
+            note2:{
+                "title":"How To",
+                "data":"<h2><u>Re-order topics</u></h2><p>to re order topics, click and drag the topic in the topics menu to the position you want it to be in.</p><p><br></p><h2><u>Change or delete unit detail</u></h2><p>To change a units details, click the information icon next to the units long name</p><p><br></p><h2><u>delete a topic</u></h2><p>to delete a topic press the delete button in the info bar.</p><p><br></p>"
             }
         }
 
