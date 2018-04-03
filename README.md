@@ -1,14 +1,10 @@
 # UPlanner
 
-One Paragraph of project description goes here
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+UPlanner is a web application designed to assist lectures and educators to plan units.
 
 ### Prerequisites
 
-To run this project you will need a few prerequisites.
+To run this project you will need a few things to be installed.
 
 1. Node JS
 2. NPM
@@ -31,36 +27,24 @@ npm install
 ```
 mysql -u root -p < dbSQL.sql
 ```
-alternatively, you can copy the contense of dbSQL.sql into MySQL
+alternatively, you can copy the contents of dbSQL.sql into MySQL
+
+4. To start the server run the command:
+
+```
+npm start
+```
 
 
-
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
+## Reflection
 
 Explain how to run the automated tests for this system
 
-### Break down into end to end tests
+
+
+### Potential future features
 
 Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Author
 

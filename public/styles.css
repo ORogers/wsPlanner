@@ -23,7 +23,7 @@ body{
     "footer footer";
 
   grid-template-columns: 15vw 1fr;
-  grid-template-rows: 10vh 8em 1fr;
+  grid-template-rows: 10vh 10em 1fr;
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -232,6 +232,7 @@ header ul li {
     display:inline-block;
     width: 90%;
     padding: 0;
+    overflow-y: auto;
 
 }
 
@@ -260,8 +261,11 @@ header ul li {
     margin: 1em 0;
 }
 
-#tWeeks, #topicName{
-    width: 5em;
+#topicName{
+    width: 12em;
+}
+#tWeeks{
+    width: 3em;
 }
 
 
@@ -310,28 +314,12 @@ footer {
 
 
 @media screen and (max-width:950px) and (min-width: 551px) {
-    #layoutGrid {
-      display: grid;
 
-      grid-template-areas:
-        "header"
-        "info"
-        "cont"
-        "footer";
-
-      grid-template-columns: 1fr;
-      grid-template-rows: 5em 0.5fr;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-    }
     .mainContent{
         width: 45%;
 
     }
-    #sidebar{
-        display: none;
-    }
+
     .topicInfo, .unitInfo {
         margin: 0
     }
@@ -347,22 +335,29 @@ footer {
 
       grid-template-areas:
         "header"
+        "nav"
         "info"
         "cont"
         "footer";
 
       grid-template-columns: 1fr;
-      grid-template-rows: 5em 0.5fr;
+      grid-template-rows: 5em 10em 0.5fr;
       margin: 0;
       padding: 0;
       height: 100vh;
     }
     .mainContent{
         width: 100%;
+        margin: 1em 1.5em;
+        height: 85vh;
 
     }
     #sidebar{
-        display: none;
+        grid-area: nav;
+        width: 100vw;
+        height: 100%;
+
+        background-color: white;
     }
     #editUnitInfo{
         margin: 1em 5%;

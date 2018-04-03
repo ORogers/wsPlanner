@@ -1,9 +1,10 @@
 'use strict';
 
 window.onload = function() {
+    if(localStorage.upUser == undefined) window.location.href = "/index.html"
     fillDashboard();
     $('#moreUnitInfo').addEventListener('click',editUnit);
-    $('#saveTopic').addEventListener('click',saveTopics);
+    $('#saveTopics').addEventListener('click',saveTopics);
     $('#deleteTopic').addEventListener('click',removeTopic);
     $('#addNote').addEventListener('click',addNote);
     $('#saveTopic').addEventListener('click',addTopicToList);
@@ -29,12 +30,19 @@ function fillUnitList(units){
         unitList.add(option);
     }
 
+    unitList.add(document.createElement("option"));
+
     let addNewOp = document.createElement("option");
     addNewOp.text = "Add new unit";
     addNewOp.value = "+";
     unitList.add(addNewOp);
 
     unitList.addEventListener("change", unitChanged);
+    //loads first unit as default
+    if(units.length > 0){
+        loadUnit(units[0].uID);
+    }
+
 }
 
 function fillTopics(topics){
@@ -62,21 +70,25 @@ function fillTopics(topics){
     topicsList.appendChild(li);
 }
 
-async function unitChanged(event){
+function unitChanged(event){
     if (event.target.value == "+"){
         document.location.href = '/addUnit.html';
     }else{
-        saveTopics();
-        let url = '/api/unit?uID=' + event.target.value;
-        let unit = await callServer(url,'GET');
-        currentUnit.topics = unit.topics;
-        currentUnit.unit = unit.unit[0];
-        currentUnit.currentTopic = unit.topics[0];
-        fillTopics(unit.topics);
-        fillInfobar(currentUnit.topics[0]);
-        $("#mainContentFlex").innerHTML = " ";
-        fillNotes();
+        loadUnit(event.target.value);
     }
+}
+
+async function loadUnit(uID){
+    if(currentUnit != {}) saveTopics();
+    let url = '/api/unit?uID=' + uID;
+    let unit = await callServer(url,'GET');
+    currentUnit.topics = unit.topics;
+    currentUnit.unit = unit.unit[0];
+    currentUnit.currentTopic = unit.topics[0];
+    fillTopics(unit.topics);
+    fillInfobar(currentUnit.topics[0]);
+    $("#mainContentFlex").innerHTML = " ";
+    fillNotes();
 }
 
 function setCurrentTopic(event){
@@ -88,10 +100,8 @@ function setCurrentTopic(event){
 }
 
 function storeTopicChanges(){
-    if(currentUnit != {} && currentUnit.topics != undefined){
-        currentUnit.topics = currentUnit.topics.filter(topic => topic.tID != currentUnit.currentTopic.tID);
-        addTopicToList(currentUnit.currentTopic.tID);
-    }
+    currentUnit.topics = currentUnit.topics.filter(topic => topic.tID != currentUnit.currentTopic.tID);
+    addTopicToList(currentUnit.currentTopic.tID);
 }
 
 
@@ -173,7 +183,6 @@ function addTopicToList(tID){
 function addEmptyTopic(){
     storeTopicChanges();
     $('#topicName').value = "New Topic";
-    $('#leader').value = null;
     $('#tWeeks').value = 1;
     let topic = {
         tName: $('#topicName').value,
@@ -187,14 +196,16 @@ function addEmptyTopic(){
 }
 
 async function saveTopics(){
-    storeTopicChanges();
-    let data = {
-        uID: $('#units').value,
-        topics: currentUnit.topics
-    };
-    let response = await callServer('/api/topics','PUT',data);
-    fillNotes();
-    fillInfobar(currentUnit.topics[0]);
+    if(currentUnit.topics != undefined){
+        storeTopicChanges();
+        let data = {
+            uID: $('#units').value,
+            topics: currentUnit.topics
+        };
+        let response = await callServer('/api/topics','PUT',data);
+        fillNotes();
+        fillInfobar(currentUnit.topics[0]);
+    }
 }
 
 async function getUnits(){

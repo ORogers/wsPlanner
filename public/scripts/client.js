@@ -1,10 +1,6 @@
 'use strict';
 //Global var to hould units
-let currentUnit = {
-    currentTopic: {},
-    unit: {},
-    topics: []
-};
+let currentUnit = {};
 
 
 async function onSignIn(googleUser) {

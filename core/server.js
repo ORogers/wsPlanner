@@ -17,11 +17,7 @@ app.use(bodyParser.json());
 
 // log all requests to console
 app.use('/', (req, res, next) => {
-    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if (ip.substr(0, 7) == "::ffff:") {
-        ip = ip.substr(7)
-    }
-    console.log(new Date(), ip, req.method, req.url);
+    console.log(new Date(), req.method, req.url);
     next();
 });
 
