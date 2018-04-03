@@ -2,7 +2,6 @@ html * {
     font-family: 'Ubuntu', sans-serif;
 }
 
-
 body{
     height: 100vh;
     width: 100vw;
@@ -46,7 +45,8 @@ body{
 
 }
 #editUnitInfo{
-    margin: 0 33%;
+    margin: 1em 33%;
+    grid-area: info;
 }
 
 #units{
@@ -113,9 +113,6 @@ header ul li {
     display: inline-block;
     padding: 0;
 }
-#editUnitInfo{
-    grid-area: info;
-}
 
 .navButtons{
     height: 9.8vh;
@@ -149,7 +146,7 @@ header ul li {
     border-radius: 15px;
     z-index: 1;
     right: 0;
-    top: 10vh;
+    top: 9.5vh;
     border: solid;
 }
 
@@ -238,7 +235,7 @@ header ul li {
 
 }
 
-#unitTitle{
+#unitTitle, #moreUnitInfo {
     font-size: large;
 }
 
@@ -260,11 +257,12 @@ header ul li {
 }
 .topicInfo{
     float: right;
-    margin: 2em 0;
+    margin: 1em 0;
 }
 
-
-
+#tWeeks, #topicName{
+    width: 5em;
+}
 
 
 .mainContent{
@@ -273,8 +271,6 @@ header ul li {
     width: 30%;
     margin: 0.7em 0.4em;
 }
-
-
 
 .textSection{
     margin: 1em;
@@ -339,6 +335,10 @@ footer {
     .topicInfo, .unitInfo {
         margin: 0
     }
+    #editUnitInfo{
+        margin: 1em 10%;
+        grid-area: info;
+    }
 }
 
 @media screen and (max-width:550px) {
@@ -363,5 +363,9 @@ footer {
     }
     #sidebar{
         display: none;
+    }
+    #editUnitInfo{
+        margin: 1em 5%;
+        grid-area: info;
     }
 }

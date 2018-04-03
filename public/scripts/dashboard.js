@@ -1,52 +1,14 @@
 'use strict';
-//Global var to hould units
-let currentUnit = {};
 
+window.onload = function() {
+    fillDashboard();
+    $('#moreUnitInfo').addEventListener('click',editUnit);
+    $('#saveTopic').addEventListener('click',saveTopics);
+    $('#deleteTopic').addEventListener('click',removeTopic);
+    $('#addNote').addEventListener('click',addNote);
+    $('#saveTopic').addEventListener('click',addTopicToList);
+};
 
-async function onSignIn(googleUser) {
-    let auth2 = gapi.auth2.getAuthInstance();
-    localStorage.setItem("upUser",JSON.stringify(googleUser.getBasicProfile()));
-    localStorage.setItem("upAuthToken",auth2.currentUser.get().getAuthResponse().id_token);
-    auth2.disconnect();
-
-
-    let response = await callServer('/api/login','GET')
-    document.location.href = '/dashboard.html';
-
-
-}
-
-
-function signOut() {
-    let auth2 = gapi.auth2.getAuthInstance();
-    localStorage.removeItem("upAuthToken");
-    localStorage.removeItem("upUser");
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-      document.location.href = '/index.html';
-    });
-}
-
-
-//removes auth token on page leave
-// window.onbeforeunload = () =>{
-//     console.log("goodbye");
-//     signOut();
-// }
-
-function $(query) {
-    return document.querySelector(query);
-}
-
-async function testAuth(){
-    let el = $('#server-response');
-    el.textContent = "loading...";
-    const response = await callServer('/api','GET');
-    const data = await response.text();
-    el.textContent = data;
-
-
-}
 
 async function fillDashboard(){
     let units = await getUnits();
@@ -57,6 +19,7 @@ async function fillDashboard(){
     $(".g-signin2").style.display = "none";
 
 }
+
 function fillUnitList(units){
     let unitList = $('#units');
     for (let unit of units){
@@ -106,7 +69,6 @@ async function unitChanged(event){
         saveTopics();
         let url = '/api/unit?uID=' + event.target.value;
         let unit = await callServer(url,'GET');
-        console.log(unit);
         currentUnit.topics = unit.topics;
         currentUnit.unit = unit.unit[0];
         currentUnit.currentTopic = unit.topics[0];
@@ -126,11 +88,12 @@ function setCurrentTopic(event){
 }
 
 function storeTopicChanges(){
-    if(currentUnit != {}){
+    if(currentUnit != {} && currentUnit.topics != undefined){
         currentUnit.topics = currentUnit.topics.filter(topic => topic.tID != currentUnit.currentTopic.tID);
         addTopicToList(currentUnit.currentTopic.tID);
     }
 }
+
 
 function fillInfobar(topic){
     $('#unitTitle').textContent = currentUnit.unit.uTitle;
@@ -142,7 +105,6 @@ function fillInfobar(topic){
 let source;
 function dragStarted(evt){
     //start drag
-    console.log("grag start");
     source=evt.target;
     //set data
     evt.dataTransfer.setData("text/plain", evt.target.innerHTML);
@@ -172,25 +134,6 @@ function dropped(evt){
     //update text in drop target
     evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
 
-}
-
-async function sendUnit(){
-    if(validateAddUnit()){
-        $('#submitUnit').value = "Sending Unit... "
-        let unit = {
-            title: $('#uName').value,
-            sTitle: $('#uSName').value,
-            desc: $('#uDesc').value,
-            weeks: $('#uWeeks').value
-        }
-        let response = await callServer('/api/unit',"POST",unit);
-        if(response[1] == null){
-            window.location.href = "/dashboard.html"
-        }else{
-            $('#submitUnit').value = "Error"
-            setTimeout(() => $('#submitUnit').value = "Add Unit",2000);
-        }
-    }
 }
 
 
@@ -252,7 +195,6 @@ async function saveTopics(){
     let response = await callServer('/api/topics','PUT',data);
     fillNotes();
     fillInfobar(currentUnit.topics[0]);
-    console.log(response);
 }
 
 async function getUnits(){
@@ -260,15 +202,6 @@ async function getUnits(){
     return(units);
 }
 
-async function updateTest(){
-    let unit = {
-        title: $('#uName').value,
-        sTitle: $('#uSName').value,
-        desc: $('#uDesc').value,
-        weeks: $('#uWeeks').value
-    }
-    let response = callServer('/api/unit?uID=6',"PUT",unit);
-}
 
 function addNote(){
     const newNote = window.note.content.cloneNode(true);
@@ -345,49 +278,4 @@ function fillNotes(){
 
 function editUnit(){
     window.location.href = '/editUnit.html?uID=' + $('#units').value
-}
-
-
-async function callServer(fetchURL, method, payload) {
-
-    const fetchOptions = {
-        credentials: 'same-origin',
-        method: method,
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.upAuthToken,
-        },
-    };
-
-    console.log(`${method} ${fetchURL}`);
-
-    if (payload) {
-        let data = JSON.stringify(payload);
-        fetchOptions.body = data;
-        fetchOptions.headers['Content-Type'] = 'application/json';
-        fetchOptions.headers['Accept'] = 'application/json';
-    }
-    let response = await fetch(fetchURL, fetchOptions);
-    if (!response.ok) {
-        // handle the error
-        console.log("Server error:\n" + response.status);
-        return;
-    }
-
-    // handle the response
-    let data = await response.text();
-    if (!data) {
-        data = JSON.stringify({
-            error: "error on fetch"
-        });
-    }
-
-    try {
-        data = JSON.parse(data);
-    } catch (err) {
-        data = {
-            response: data
-        };
-    }
-    return data;
-
 }

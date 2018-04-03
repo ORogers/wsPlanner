@@ -38,12 +38,12 @@
 
         <div id="unitInfo" class="contentBox ">
             <ul>
-                <li class="unitInfo"><h2 id="unitTitle">Loading</h2></li>
-                <li class="unitInfo"><a onclick="editUnit()">&#9432;</a></li>
-                <li class="unitInfo"><input type="submit" value="Save" onclick="saveTopics()"></li>
-                <li class="topicInfo"><input type="submit" value="Delete" onclick="removeTopic()"></li>
-                <li class="topicInfo"><input type="submit" value="Add Note" onclick="addNote()"></li>
-                <li class="topicInfo" ><input type="submit" value="Save" onclick="addTopicToList()"></li>
+                <li class="unitInfo"><h2 id="unitTitle">Please select a unit</h2></li>
+                <li class="unitInfo"><a id="moreUnitInfo">&#9432;</a></li>
+                <li class="unitInfo"><input type="submit" value="Save All" id="saveTopics"></li>
+                <li class="topicInfo"><input type="submit" value="Delete" id="deleteTopic"></li>
+                <li class="topicInfo"><input type="submit" value="Add Note" id="addNote"></li>
+                <li class="topicInfo" ><input type="submit" value="Save new topic" id="saveTopic"></li>
                 <li class="topicInfo">
                     <label>Number of weeks:</label>
                     <input id="tWeeks" type="number" placeholder="Weeks"/>
@@ -76,6 +76,6 @@
     </div>
 </template>
 
-<script src="../client.js"></script>
-<script>fillDashboard()</script>
+<script src="../scripts/client.js"></script>
+<script src="../scripts/dashboard.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
