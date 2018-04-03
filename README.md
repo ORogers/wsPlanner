@@ -17,19 +17,24 @@ To run this project you will need a few prerequisites.
 
 ### Installation
 
-To start the server folow these steps:
+To start the server follow these steps:
+1. Make a copy of this project into your local machine
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+2. Install the project dependences by navigating to the main project directory and run the command:
 
 ```
-until finished
+npm install
 ```
+
+3. initialize the database by running the following command
+
+```
+mysql -u root -p < dbSQL.sql
+```
+alternatively, you can copy the contense of dbSQL.sql into MySQL
+
+
+
 
 End with an example of getting some data out of the system or using it for a little demo
 
@@ -57,20 +62,6 @@ Give an example
 
 Add additional notes about how to deploy this on a live system
 
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
 ## Author
 
-* **UP805988** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **UP805988** - *University of Portsmouth*
