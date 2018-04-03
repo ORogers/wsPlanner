@@ -40,7 +40,7 @@ async function shutDown() {
 
 module.exports.findUser = async function findUser(user){
     const sql = await init();
-    let query = 'SELECT * from Lecturers where email = ?';
+    let query = 'SELECT * from lecturers where email = ?';
     try{
         let result = await sql.query(sql.format(query,user.emails[0].value));
 
@@ -104,13 +104,66 @@ module.exports.addUnit = async function(unit){
     }
 }
 
+ module.exports.updateUnit = async function(unit){
+     const sql = await init();
+     let query = 'UPDATE units set uTitle = ?, uShortTitle= ?, uDesc = ?, uWeeks = ? WHERE uID = ?';
+     const values = [unit.title, unit.sTitle, unit.desc, unit.weeks, unit.uID];
+     query = sql.format(query, values);
+     try{
+         let result = await sql.query(query);
+         return result;
+     }catch(err){
+         throw err;
+     }
+ }
 
+ module.exports.deleteUnit = async function(uID){
+     const sql = await init();
+     let query = sql.format('DELETE FROM units WHERE uID = ?',uID);
+     try{
+         let result = await sql.query(query);
+         return result;
+     }catch(err){
+         throw err;
+     }
+ }
+
+ module.exports.isCoor = async function(lID,uID){
+    const sql = await init();
+    let query = 'SELECT * FROM units WHERE uCoor = ?  AND uID = ?'
+    let values = [lID,uID];
+    try{
+        let result = await sql.query(sql.format(query, values));
+        if (result[0].length == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }catch(err){
+        throw err;
+    }
+}
+module.exports.isCoauth = async function(lID,uID){
+    const sql = await init();
+    let query = 'SELECT * FROM coauthors WHERE lID = ?  AND uID = ?'
+    let values = [lID,uID];
+    try{
+        let result = await sql.query(sql.format(query, values));
+        if (result[0].length == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }catch(err){
+        throw err;
+    }
+}
 
 module.exports.addTopic = async function(topic){
     const sql = await init();
     let query = 'INSERT into topics(??) Values (?)';
-    let coulumns = ['tName','uID',"tLeader",'tWeeks'];
-    let values = [topic.name,topic.uID,topic.leader,topic.weeks];
+    const coulumns = ['tName','uID','tWeeks','tOrder','tNotes'];
+    let values = [topic.tName,topic.uID,topic.tWeeks,topic.tOrder,topic.tNotes];
     query = sql.format(query,[coulumns,values]);
     try{
         let result = await sql.query(query);
@@ -118,13 +171,67 @@ module.exports.addTopic = async function(topic){
     }catch(err){
         throw err;
     }
+}
 
+module.exports.deleteTopic = async function(tID){
+    const sql = await init();
+    let query = sql.format('DELETE FROM topics WHERE tID = ?',tID);
+    try{
+        let result = await sql.query(query);
+        return result;
+    }catch(err){
+        throw err;
+    }
+}
+
+module.exports.deleteTopicsByUnit = async function(uID){
+    const sql = await init();
+    let query = sql.format('DELETE FROM topics WHERE uID = ?',uID);
+    try{
+        let result = await sql.query(query);
+        return result;
+    }catch(err){
+        throw err;
+    }
+}
+
+module.exports.updateTopics = async function(topics){
+    const sql = await init();
+    let queries = '';
+
+    topics.forEach(function(topic){
+        let values = [topic.tName,topic.tWeeks,topic.tOrder,topic.tNotes,topic.tID];
+        queries += sql.format("UPDATE topics SET tName = ?, tWeeks = ?, tOrder = ?, tNotes = ? WHERE tID = ?;",values)
+    });
+
+    try{
+        let result = await sql.query(queries);
+        return result;
+    }catch(err){
+        throw err;
+    }
+}
+
+module.exports.topicExists = async function(tID){
+    const sql = await init();
+    let query = 'SELECT * FROM topics WHERE tID = ?'
+    query = sql.format(query,tID);
+    try{
+        let result = await sql.query(query);
+        if (result[0].length == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }catch(err){
+        throw err;
+    }
 }
 
 module.exports.findOrAdd = async function(user){
     const sql = await init();
 
-    let query = 'SELECT * from Lecturers where email = ?';
+    let query = 'SELECT * from lecturers where email = ?';
 
     try{
         let result = await sql.query(sql.format(query,user.emails[0].value));
@@ -144,20 +251,19 @@ module.exports.findOrAdd = async function(user){
 module.exports.topicsByUnit = async function(uID){
     const sql = await init();
     let query = `SELECT
-    topics.tID, topics.tName, topics.tWeeks,
-    lecturers.fName, lecturers.lName
-    FROM topics
-    JOIN lecturers ON topics.tLeader = lecturers.lID
-    JOIN units ON topics.uID = units.uID
-    WHERE topics.uID = ?`;
+        topics.tID, topics.tName, topics.tWeeks,
+        topics.tOrder, topics.tNotes,
+         topics.uID
+        FROM topics
+        JOIN units ON topics.uID = units.uID
+        WHERE topics.uID = ?`;
     query = sql.format(query,uID);
     let results = await sql.query(query);
+    for (let topic of results[0]){
+        if (topic.tNotes == null) topic.tNotes == {};
+    }
     return results[0];
 }
-
-
-
-
 
 async function addUser(user){
     const sql = await init();
@@ -165,7 +271,7 @@ async function addUser(user){
     const values = [user.name.givenName, user.name.familyName, user.emails[0].value];
     const columns = ["fName","lName","email"] ;
 
-    let query = 'INSERT into Lecturers(??) values (?)';
+    let query = 'INSERT into lecturers(??) values (?)';
     let result = await sql.query(query,[columns,values]);
 
     return(result);

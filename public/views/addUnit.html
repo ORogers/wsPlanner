@@ -16,7 +16,7 @@
                 <img id="userPhoto" src="">
                 <div class="userMenu-content">
                     <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                    <a id="signOut" href="" onclick="signOut();">Logout</a>
+                    <a id="signOut" onclick="signOut();">Logout</a>
                 </div>
             </li>
             <li class="navButtons"><a href="dashboard.html">Dashboard</a></li>
@@ -24,30 +24,30 @@
     </header>
 
     <div id="editUnitInfo" class="contentBox">
-        <h1>Edit Unit</h1>
+        <h1>Add Unit</h1>
 
         <lable for="uName">Unit Name</lable>
-        <input type="text" id="uName" placeholder="Loading unit name..." />
+        <input type="text" id="uName" placeholder="Enter unit name"/>
 
         <lable for="uSName">Unit short name</lable>
-        <input type="text" id="uSName" placeholder="Loading short name..." />
+        <input type="text" id="uSName" placeholder="Enter short name"/>
 
         <lable for="uDesc">Unit Description</lable>
-        <input type="text" id="uDesc" placeholder="Loading Description..." />
+        <input type="text" id="uDesc" placeholder="Enter Description"/>
 
         <lable for="uWeeks">Unit length</lable>
-        <input type="number" id="uWeeks" placeholder="Loading Weeks..." />
+        <input type="number" id="uWeeks" placeholder="Weeks"/>
 
-        <input type="submit" id="saveEdits" value="Save Edits">
-        <input type="submit" id="deleteUnit" value="Delete Unit">
+        <input id="submitUnit" type="submit" value="Add Unit"></a>
+
     </div>
-
 
 
     <footer>
         <p>805988 WEBSCRIPT COUSEWORK</p>
     </footer>
 </div>
-<script src="../scripts/edit.js"></script>
+
 <script src="../scripts/client.js"></script>
+<script src="../scripts/addUnit.js"></script>
 <script src="../scripts/validation.js"></script>

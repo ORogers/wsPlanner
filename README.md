@@ -1,87 +1,78 @@
 # UPlanner
 
-One Paragraph of project description goes here
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+UPlanner is a web application designed to assist lectures and educators to plan units.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+To run this project you will need a few things to be installed.
+
+1. Node JS
+2. NPM
+3. MySQL (or MariaDB)
+
+
+### Installation
+
+To start the server follow these steps:
+1. Make a copy of this project into your local machine
+
+2. Install the project dependences by navigating to the main project directory and run the command:
 
 ```
-Give examples
+npm install
 ```
 
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
+3. initialize the database by running the following command
 
 ```
-Give the example
+mysql -u root -p < dbSQL.sql
 ```
+alternatively, you can copy the contents of dbSQL.sql into MySQL
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+4. To start the server run the command:
 
 ```
-Give an example
+npm start
 ```
 
-### And coding style tests
+## How to use UPlanner
 
-Explain what these tests test and why
+### Create new unit
+To create a new topic navigate to the my units list and select 'add new unit'. From there you will be prompted to fill in the details of the unit. Then click add unit and the unit will be save
 
-```
-Give an example
-```
+### Add new topic
+To add a new topic, navigate to the unit you wish to at a topic to using the 'My Units' list. Then click the plus button at the bottom of the topics list. A new topic will appear in the top of the in the info bar. fill in the information and press save.
 
-## Deployment
+### Add new note
+To add a new note click the add note button in the topics bar
 
-Add additional notes about how to deploy this on a live system
+### Re-order topics
+To re order topics, click and drag the topic in the topics menu to the position you want it to be in.
 
-## Built With
+### Change or delete unit detail
+To change a units details, click the information icon next to the units long name
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+### Delete a topic
+to delete a topic press the delete button in the info bar.
 
-## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+## Reflection
 
-## Versioning
+This coursework has taught  me a lot about RESTful servers, mainly how RESTful servers are structured and how they function.
+Its has highlighted to me that fact that the RESTful architecture is well suited for web applications such as UPlanner as different sections of the project can be worked on independently, as well as the ease of scalability.
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+something else that this project as taught me is how effective Caching data can be with a rest server. I noticed a massive decrees in server requests after marking my public files as catchable. further improving the performance of the server, although this dose have a Potentially negative effect as data can become outdated and unreliable.
 
-## Authors
+This project has also thought me about workflow. I began to follow Rich's GitHub post about workflow, this has helped me maintain good version control and regular commits. Using this method has helped me organise my work and visualise what needs to be done.
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+## Potential future features
+Future features that could be added to this project could be a second server for websockets  as to allow for users to collaboratively plan their units.
 
-## Acknowledgments
+Another future feature could be to allow for files to be uploaded to each topics. this could allow users to keep files such as lecture slide and other resources in one place.
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+## Author
+
+* **UP805988** - *University of Portsmouth*

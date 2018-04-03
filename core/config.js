@@ -6,7 +6,7 @@ module.exports.database = {
 	user: 'root',
 	password: 'root',
 	database: 'wsPlanner',
-	//socketPath: '/tmp/mysql.sock',
+	multipleStatements: true,
 }
 
 module.exports.gAuth = {

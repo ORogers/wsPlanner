@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node core/server.js",
-    "nodemon": "nodemon core/server"
+    "nodemon": "nodemon core/server",
+    "initDB": "mysql -u root -p < dbSQL.sql "
   },
   "author": "UP805988",
   "license": "ISC",

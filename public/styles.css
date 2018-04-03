@@ -2,7 +2,6 @@ html * {
     font-family: 'Ubuntu', sans-serif;
 }
 
-
 body{
     height: 100vh;
     width: 100vw;
@@ -24,7 +23,7 @@ body{
     "footer footer";
 
   grid-template-columns: 15vw 1fr;
-  grid-template-rows: 10vh 8em 1fr;
+  grid-template-rows: 10vh 10em 1fr;
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -46,7 +45,8 @@ body{
 
 }
 #editUnitInfo{
-    margin: 0 33%;
+    margin: 1em 33%;
+    grid-area: info;
 }
 
 #units{
@@ -87,6 +87,7 @@ header {
   border-bottom: solid;
   background-color: #4296D2;
   text-align: left;
+  min-height: 3em;
 }
 
 #headerTitle{
@@ -95,7 +96,6 @@ header {
     color: #5E225F;
     padding: 0em 0.5em;
     float: left;
-    margin: auto;
     display: inline-block;
 
 }
@@ -112,9 +112,6 @@ header ul li {
     height: inherit;
     display: inline-block;
     padding: 0;
-}
-#editUnitInfo{
-    grid-area: info;
 }
 
 .navButtons{
@@ -149,7 +146,7 @@ header ul li {
     border-radius: 15px;
     z-index: 1;
     right: 0;
-    top: 5em;
+    top: 9.5vh;
     border: solid;
 }
 
@@ -169,6 +166,8 @@ header ul li {
   border-right: solid;
   background-color: rgba(0,0,0,0.1);
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  overflow-x: auto;
+
 }
 #sideList, #topicList{
     padding: 0;
@@ -186,6 +185,10 @@ header ul li {
     box-sizing: content-box;
     border-bottom: solid;
 
+
+}
+#topicList li{
+    height: 6vh;
 }
 
 #topicList li:hover{
@@ -207,7 +210,7 @@ header ul li {
     grid-area: cont;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: left;
     padding: 0;
     margin: 0;
 }
@@ -227,7 +230,12 @@ header ul li {
     grid-area: info;
     margin: 0.5em 0.4em;
     display:inline-block;
-    width: 90%
+    width: 90%;
+    padding: 0;
+}
+
+#unitTitle, #moreUnitInfo {
+    font-size: large;
 }
 
 #unitInfo ul {
@@ -241,17 +249,22 @@ header ul li {
 
 #unitInfo ul li {
     display: inline-block;
-    padding: 0;
+    padding: 0 1em;
 }
 #unitInfo select{
     margin-top:  0;
 }
 .topicInfo{
     float: right;
-    margin: 2em 0;
+    margin: 1em 0;
 }
 
-
+#topicName{
+    width: 12em;
+}
+#tWeeks{
+    width: 3em;
+}
 
 
 .mainContent{
@@ -261,17 +274,18 @@ header ul li {
     margin: 0.7em 0.4em;
 }
 
-
-
 .textSection{
     margin: 1em;
     padding: 2em;
     background-color: white;
 }
+
+#loginInfo{
+    grid-area: cont;
+}
 #loginBox{
-    margin-top: 5em;
-    margin-left: 40%;
-    margin-right: 40%;
+
+    margin: 5em 40%;
     width: 20em;
 }
 
@@ -297,28 +311,19 @@ footer {
 }
 
 
-@media screen and (max-width:800px) and (min-width: 551px) {
-    #layoutGrid {
-      display: grid;
+@media screen and (max-width:950px) and (min-width: 551px) {
 
-      grid-template-areas:
-        "header"
-        "info"
-        "cont"
-        "footer";
-
-      grid-template-columns: 1fr;
-      grid-template-rows: 5em 8em;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-    }
     .mainContent{
         width: 45%;
 
     }
-    #sideList{
-        display: none;
+
+    .topicInfo, .unitInfo {
+        margin: 0
+    }
+    #editUnitInfo{
+        margin: 1em 10%;
+        grid-area: info;
     }
 }
 
@@ -328,21 +333,32 @@ footer {
 
       grid-template-areas:
         "header"
+        "nav"
         "info"
         "cont"
         "footer";
 
       grid-template-columns: 1fr;
-      grid-template-rows: 5em 8em;
+      grid-template-rows: 5em 10em 0.5fr;
       margin: 0;
       padding: 0;
       height: 100vh;
     }
     .mainContent{
         width: 100%;
+        margin: 1em 1.5em;
+        height: 85vh;
 
     }
-    #sideList{
-        display: none;
+    #sidebar{
+        grid-area: nav;
+        width: 100vw;
+        height: 100%;
+
+        background-color: white;
+    }
+    #editUnitInfo{
+        margin: 1em 5%;
+        grid-area: info;
     }
 }

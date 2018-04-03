@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <title>UPlanner - Dashboard</title>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-<script src="https://togetherjs.com/togetherjs-min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-client_id" content="777537472432-8qni684qbrq6j911t6e2s94qo8kp6fia.apps.googleusercontent.com">
 <link rel="stylesheet" href="styles.css">
@@ -14,10 +13,8 @@
         <ul>
             <li id="headerTitle"><h1>UPlanner</h1></li>
             <li class="navButtons userMenu">
-                <img id="userPhoto" src="">
+                <img id="userPhoto" src="." alt="profile picture">
                 <div class="userMenu-content">
-                    <a>Settings</a>
-                    <a onclick="TogetherJS(this); return false;">Collaborate</a>
                     <div class="g-signin2" data-onsuccess="onSignIn"></div>
                     <a id="signOut" href="" onclick="signOut();">Logout</a>
                 </div>
@@ -27,62 +24,49 @@
 
     <div id="sidebar">
         <ul id="sideList">
-            <li><h2>My Units</h2>
-                <li>
-                    <select id="units"></select>
-                </li>
-            </li>
+            <li><h2>My Units</h2></li>
+            <li><select id="units"></select></li>
             <li id="sideTitle"><h2>Topics</h2></li>
         </ul>
-        <ul id="topicList">
-
-        </ul>
+        <ul id="topicList"></ul>
 
 
     </div>
 
         <div id="unitInfo" class="contentBox ">
             <ul>
-                <li class="unitInfo"><h2 id="unitTitle">Loading</h2></li>
-                <li class="unitInfo"><a href="">Info</a></li>
-                <input type="submit"  class="topicInfo" value="Save" onclick="sendTopic()" >
+                <li class="unitInfo"><h2 id="unitTitle">Please select a unit</h2></li>
+                <li class="unitInfo"><a id="moreUnitInfo">&#9432;</a></li>
+                <li class="unitInfo"><input type="submit" value="Save" id="saveTopics"></li>
+                <li class="topicInfo"><input type="submit" value="Delete" id="deleteTopic"></li>
+                <li class="topicInfo"><input type="submit" value="Add Note" id="addNote"></li>
                 <li class="topicInfo">
-                    <label>Number of weeks</label>
+                    <label>Number of weeks:</label>
                     <input id="tWeeks" type="number" placeholder="Weeks"/>
                 </li>
                 <li class="topicInfo">
-                    <select id="leader">
-                        <option value="1">Oliver</option>
-                    </select>
+                    <label>Topic Name:</label>
+                    <input id="topicName" placeholder="Topic Name" />
                 </li>
-                <li class="topicInfo"><input id="topicName" placeholder="Topic Name" /></li>
             </ul>
         </div>
 
         <div id="mainContentFlex">
-            <div class="contentBox mainContent">
-                <h1>title</h1>
-                <div id="editor">
-                </div>
-            </div>
-            <div class="contentBox mainContent">
-                <h1>title</h1>
-            </div>
-            <div class="contentBox mainContent">
-                <h1>title</h1>
-            </div>
+
         </div>
 
     <footer>
         <p>805988 WEBSCRIPT COUSEWORK</p>
     </footer>
 </div>
+<template id="note">
+    <div class="contentBox mainContent">
+        <input id="nTitle" />
+        <button>Delete</button>
+        <div id="editor"></div>
+    </div>
+</template>
 
-<script src="../client.js"></script>
-<script>fillDashboard()</script>
+<script src="../scripts/client.js"></script>
+<script src="../scripts/dashboard.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script>
-  var quill = new Quill('#editor', {
-    theme: 'snow'
-  });
-</script>
