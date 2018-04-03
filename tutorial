@@ -1,7 +1,0 @@
-tID: 44
-tLeader: "1"
-tName: "Tutorial"
-tNotes: "{"note0":{"title":"Welcome note","data":"<h1><strong><u>Welcome</u></strong></h1><p>You can fill notes with anything you want, like Lecture or practical plans, links to lecture slides or online resources, anything that will help you to plan your unit.</p>"},"note1":{"title":"How To","data":"<h2><u>Create new unit</u></h2><p>To create a new topic navigate to the my units list and select 'add new unit'. From there you will be prompted to fill in the details of the unit. Then click add unit and the unit will be save</p><p><br></p><h2><u>Add new topic</u></h2><p>To add a new topic, navigate to the unit you wish to at a topic to using the 'My Units' list. Then click the plus button at the bottom of the topics list.</p><p><br></p><p><br></p>"}}"
-tOrder: 2
-tWeeks: "1"
-uID: "7"

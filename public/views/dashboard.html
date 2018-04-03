@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <title>UPlanner - Dashboard</title>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-<script src="https://togetherjs.com/togetherjs-min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-signin-client_id" content="777537472432-8qni684qbrq6j911t6e2s94qo8kp6fia.apps.googleusercontent.com">
 <link rel="stylesheet" href="styles.css">
@@ -16,8 +15,6 @@
             <li class="navButtons userMenu">
                 <img id="userPhoto" src="." alt="profile picture">
                 <div class="userMenu-content">
-                    <a>Settings</a>
-                    <a onclick="TogetherJS(this); return false;">Collaborate</a>
                     <div class="g-signin2" data-onsuccess="onSignIn"></div>
                     <a id="signOut" href="" onclick="signOut();">Logout</a>
                 </div>
