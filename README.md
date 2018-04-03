@@ -63,6 +63,8 @@ Its has highlighted to me that fact that the RESTful architecture is well suited
 
 something else that this project as taught me is how effective Caching data can be with a rest server. I noticed a massive decrees in server requests after marking my public files as catchable. further improving the performance of the server, although this dose have a Potentially negative effect as data can become outdated and unreliable.
 
+This project has also thought me about workflow. I began to follow Rich's GitHub post about workflow, this has helped me maintain good version control and regular commits. Using this method has helped me organise my work and visualise what needs to be done.
+
 
 
 
